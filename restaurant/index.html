@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Restaurant Website Demo: One System, Many Brands</title>
+<meta name="description" content="Demo restaurant website: mobile menu, hours, tap-to-call, directions and per-brand styling.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;700&family=Bebas+Neue&family=Rubik:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  /* ---- Brand themes: each restaurant only changes these variables ---- */
+  body[data-brand="bistro"]{
+    --bg:#fbf7f1; --surface:#ffffff; --ink:#2b2119; --muted:#7a6a5c; --line:#eadfd2;
+    --accent:#a2462b; --accent-ink:#fff; --hero1:#3a2a1f; --hero2:#6b3b26;
+    --font-head:"Playfair Display",Georgia,serif; --font-body:"DM Sans",system-ui,sans-serif;
+    --radius:4px; --head-case:none; --head-track:0;
+  }
+  body[data-brand="taqueria"]{
+    --bg:#fff8e8; --surface:#ffffff; --ink:#1e2a22; --muted:#5f6b62; --line:#f0e2bf;
+    --accent:#0f8a5f; --accent-ink:#fff; --hero1:#e0472b; --hero2:#f2a71b;
+    --font-head:"Bebas Neue",Impact,sans-serif; --font-body:"Rubik",system-ui,sans-serif;
+    --radius:14px; --head-case:uppercase; --head-track:.03em;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{font-family:var(--font-body);background:var(--bg);color:var(--ink);line-height:1.6;transition:background .3s}
+  h1,h2,h3{font-family:var(--font-head);text-transform:var(--head-case);letter-spacing:var(--head-track);line-height:1.1;font-weight:700}
+  a{color:inherit;text-decoration:none}
+  .wrap{width:min(1100px,92%);margin:0 auto}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.85rem 1.4rem;border-radius:var(--radius);font-weight:700;font-size:.95rem;border:2px solid transparent;cursor:pointer;transition:.2s;font-family:var(--font-body)}
+  .btn-accent{background:var(--accent);color:var(--accent-ink)}
+  .btn-accent:hover{filter:brightness(1.1)}
+  .btn-light{background:#fff;color:#1a1a1a}
+  .btn-outline{border-color:rgba(255,255,255,.6);color:#fff}
+  .btn-outline:hover{background:rgba(255,255,255,.12)}
+
+  /* header */
+  header{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+  .nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+  .brand{font-family:var(--font-head);font-size:1.5rem;font-weight:700;text-transform:var(--head-case);letter-spacing:var(--head-track)}
+  .brand span{color:var(--accent)}
+  .links{display:flex;gap:1.8rem;align-items:center;font-weight:500;font-size:.95rem}
+  .links a:not(.btn):hover{color:var(--accent)}
+  .links .btn{padding:.55rem 1rem}
+  .burger{display:none;background:none;border:0;font-size:1.6rem;cursor:pointer;color:var(--ink)}
+
+  /* hero */
+  .hero{background:linear-gradient(135deg,var(--hero1),var(--hero2));color:#fff;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 85% 20%,rgba(255,255,255,.18),transparent 45%),radial-gradient(circle at 10% 90%,rgba(0,0,0,.25),transparent 50%)}
+  .hero-in{position:relative;z-index:1;padding:5.5rem 0 4.5rem;max-width:640px}
+  .status{display:inline-flex;align-items:center;gap:.5rem;background:rgba(0,0,0,.25);padding:.35rem .9rem;border-radius:40px;font-size:.85rem;font-weight:500;margin-bottom:1.3rem}
+  .dot{width:9px;height:9px;border-radius:50%;background:#3ddc84;box-shadow:0 0 0 3px rgba(61,220,132,.3)}
+  .dot.closed{background:#ff6b6b;box-shadow:0 0 0 3px rgba(255,107,107,.3)}
+  .hero h1{font-size:clamp(2.6rem,6vw,4.4rem);margin-bottom:1rem}
+  .hero p{font-size:1.12rem;opacity:.9;margin-bottom:2rem}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:.8rem}
+
+  /* specials */
+  .specials{margin-top:-2.2rem;position:relative;z-index:2}
+  .special-card{background:var(--surface);border-radius:var(--radius);box-shadow:0 14px 40px rgba(0,0,0,.1);padding:1.4rem 1.6rem;display:flex;gap:1.2rem;align-items:center;border-left:5px solid var(--accent)}
+  .special-card .label{font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--accent)}
+  .special-card h3{font-size:1.4rem;margin:.1rem 0}
+  .special-card p{color:var(--muted);font-size:.93rem}
+  .special-card .price{margin-left:auto;font-family:var(--font-head);font-size:1.8rem;color:var(--accent);white-space:nowrap}
+
+  section{padding:5rem 0}
+  .head{text-align:center;margin-bottom:2.5rem}
+  .head h2{font-size:clamp(2rem,4vw,2.8rem);margin-bottom:.5rem}
+  .head p{color:var(--muted)}
+
+  /* menu */
+  .tabs{display:flex;gap:.5rem;justify-content:center;flex-wrap:wrap;margin-bottom:2rem;position:sticky;top:66px;background:var(--bg);padding:.8rem 0;z-index:10}
+  .tab{padding:.55rem 1.1rem;border-radius:40px;border:1.5px solid var(--line);background:var(--surface);font:inherit;font-weight:500;font-size:.92rem;cursor:pointer;color:var(--ink)}
+  .tab.active{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+  .menu-cat{margin-bottom:2.8rem;scroll-margin-top:140px}
+  .menu-cat h3{font-size:1.7rem;margin-bottom:1rem;padding-bottom:.5rem;border-bottom:2px solid var(--line)}
+  .items{display:grid;grid-template-columns:1fr 1fr;gap:.4rem 3rem}
+  .item{padding:.9rem 0;border-bottom:1px dashed var(--line)}
+  .item-top{display:flex;align-items:baseline;gap:.6rem}
+  .item-name{font-weight:700}
+  .badge{font-size:.68rem;font-weight:700;padding:.1rem .45rem;border-radius:4px;background:var(--line);color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+  .badge.hot{background:#ffe1d6;color:#c0391b}
+  .badge.veg{background:#dcf3e4;color:#16794a}
+  .fill{flex:1;border-bottom:1px dotted var(--muted);opacity:.4;transform:translateY(-4px)}
+  .item-price{font-weight:700;color:var(--accent)}
+  .item-desc{color:var(--muted);font-size:.9rem;margin-top:.15rem}
+
+  /* about */
+  .about{background:var(--surface)}
+  .about-in{display:grid;grid-template-columns:1fr 1fr;gap:3.5rem;align-items:center}
+  .about-art{aspect-ratio:4/3;border-radius:var(--radius);background:linear-gradient(135deg,var(--hero1),var(--hero2));display:flex;align-items:center;justify-content:center;font-size:6rem}
+  .about h2{font-size:clamp(2rem,4vw,2.6rem);margin-bottom:1rem}
+  .about p{color:var(--muted);margin-bottom:1rem}
+
+  /* location */
+  .loc{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem}
+  .map{border-radius:var(--radius);overflow:hidden;min-height:340px;background:var(--line);border:1px solid var(--line)}
+  .map iframe{width:100%;height:100%;min-height:340px;border:0}
+  .info{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:2rem}
+  .info h3{font-size:1.5rem;margin-bottom:.4rem}
+  .info .addr{color:var(--muted);margin-bottom:1.4rem}
+  .hours{list-style:none;margin-bottom:1.6rem}
+  .hours li{display:flex;justify-content:space-between;padding:.45rem 0;border-bottom:1px solid var(--line);font-size:.93rem}
+  .hours li.today{font-weight:700;color:var(--accent)}
+  .info .btns{display:grid;gap:.6rem}
+  .holiday{background:#fff4d6;color:#7a5a00;border-radius:6px;padding:.6rem .8rem;font-size:.85rem;margin-bottom:1.2rem}
+
+  footer{background:#141414;color:#aaa;padding:2.5rem 0;text-align:center;font-size:.88rem}
+  footer .brand{color:#fff;margin-bottom:.4rem}
+
+  /* mobile action bar */
+  .actionbar{display:none}
+
+  /* demo brand switcher */
+  .switcher{position:fixed;right:18px;bottom:18px;z-index:60;background:#111;color:#fff;border-radius:40px;padding:.35rem;display:flex;gap:.3rem;align-items:center;box-shadow:0 10px 30px rgba(0,0,0,.3);font-family:system-ui,sans-serif}
+  .switcher small{padding:0 .6rem;font-size:.72rem;opacity:.7;text-transform:uppercase;letter-spacing:.08em}
+  .switcher button{border:0;background:transparent;color:#fff;padding:.45rem .9rem;border-radius:40px;font-size:.82rem;cursor:pointer;font-weight:600}
+  .switcher button.on{background:#fff;color:#111}
+
+  @media (max-width:860px){
+    .items,.about-in,.loc{grid-template-columns:1fr}
+    .about-art{display:none}
+  }
+  @media (max-width:680px){
+    .links{display:none;position:absolute;top:66px;left:0;right:0;background:var(--surface);flex-direction:column;padding:1.4rem;gap:1.1rem;border-bottom:1px solid var(--line)}
+    .links.open{display:flex}
+    .burger{display:block}
+    section{padding:3.5rem 0}
+    .special-card{flex-wrap:wrap}
+    .special-card .price{margin-left:0}
+    .actionbar{display:grid;grid-template-columns:repeat(3,1fr);position:fixed;bottom:0;left:0;right:0;background:var(--surface);border-top:1px solid var(--line);z-index:40}
+    .actionbar a{display:flex;flex-direction:column;align-items:center;padding:.6rem 0;font-size:.75rem;font-weight:600;color:var(--accent)}
+    .actionbar a span{font-size:1.3rem;line-height:1.2}
+    .switcher{bottom:72px;right:50%;transform:translateX(50%)}
+    footer{padding-bottom:7rem}
+  }
+</style>
+</head>
+<body data-brand="bistro">
+
+<header>
+  <div class="wrap nav">
+    <a href="#top" class="brand" id="brandName"></a>
+    <nav class="links" id="links">
+      <a href="#menu">Menu</a>
+      <a href="#about">About</a>
+      <a href="#location">Location &amp; Hours</a>
+      <a href="#" class="btn btn-accent js-order" target="_blank" rel="noopener"></a>
+    </nav>
+    <button class="burger" id="burger" aria-label="Open menu">☰</button>
+  </div>
+</header>
+
+<main id="top">
+  <section class="hero" style="padding:0">
+    <div class="wrap hero-in">
+      <div class="status"><span class="dot" id="dot"></span><span id="statusText"></span></div>
+      <h1 id="heroTitle"></h1>
+      <p id="heroText"></p>
+      <div class="hero-cta">
+        <a href="#menu" class="btn btn-light">View Menu</a>
+        <a href="#" class="btn btn-outline js-call">📞 Call Us</a>
+        <a href="#" class="btn btn-outline js-dir" target="_blank" rel="noopener">📍 Directions</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap specials">
+    <div class="special-card">
+      <div>
+        <div class="label">Today's Special</div>
+        <h3 id="spName"></h3>
+        <p id="spDesc"></p>
+      </div>
+      <div class="price" id="spPrice"></div>
+    </div>
+  </div>
+
+  <section id="menu">
+    <div class="wrap">
+      <div class="head">
+        <h2>Our Menu</h2>
+        <p>Prices and dishes are updated by our staff, so what you see is what we serve.</p>
+      </div>
+      <div class="tabs" id="tabs"></div>
+      <div id="menuBody"></div>
+    </div>
+  </section>
+
+  <section class="about" id="about">
+    <div class="wrap about-in">
+      <div class="about-art" id="aboutArt" aria-hidden="true"></div>
+      <div>
+        <h2 id="aboutTitle"></h2>
+        <p id="aboutText1"></p>
+        <p id="aboutText2"></p>
+        <a href="#" class="btn btn-accent js-reserve" target="_blank" rel="noopener"></a>
+      </div>
+    </div>
+  </section>
+
+  <section id="location">
+    <div class="wrap">
+      <div class="head"><h2>Location &amp; Hours</h2></div>
+      <div class="loc">
+        <div class="map"><iframe id="map" title="Map" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></div>
+        <div class="info">
+          <h3 id="locName"></h3>
+          <p class="addr" id="addr"></p>
+          <div class="holiday" id="holiday"></div>
+          <ul class="hours" id="hours"></ul>
+          <div class="btns">
+            <a href="#" class="btn btn-accent js-call">📞 <span class="js-phone"></span></a>
+            <a href="#" class="btn btn-accent js-dir" target="_blank" rel="noopener" style="background:var(--ink)">📍 Get Directions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="brand" id="footBrand"></div>
+  <p>Demo website with fictional restaurants, built to show the layout and features.</p>
+</footer>
+
+<nav class="actionbar" aria-label="Quick actions">
+  <a href="#" class="js-call"><span>📞</span>Call</a>
+  <a href="#" class="js-dir" target="_blank" rel="noopener"><span>📍</span>Directions</a>
+  <a href="#menu"><span>🍽️</span>Menu</a>
+</nav>
+
+<div class="switcher" role="group" aria-label="Demo: switch restaurant brand">
+  <small>Demo brand</small>
+  <button data-b="bistro" class="on">Bistro</button>
+  <button data-b="taqueria">Taqueria</button>
+</div>
+
+<script>
+/* All restaurant content lives in one data object.
+   In WordPress this maps to editable fields (ACF / custom post type),
+   so staff change prices, hours and specials without touching code. */
+const BRANDS = {
+  bistro: {
+    name:['Harbor Lane',' Bistro'], emoji:'🍷',
+    title:'Seasonal plates, by the water.',
+    text:'A neighborhood bistro serving market-driven dishes, natural wines and the best fries in town.',
+    phone:'+1 (555) 010-2040', address:'123 Harbor Lane, Portland, ME',
+    orderLabel:'Order Online', reserveLabel:'Reserve a Table',
+    orderUrl:'#', reserveUrl:'#',
+    holiday:'🎄 Dec 24: closing at 3 pm. Dec 25: closed.',
+    hours:[null,[11,22],[11,22],[11,22],[11,23],[11,23],[10,21]], // Sun..Sat
+    special:{name:'Pan-Seared Scallops',desc:'Brown butter, sweet corn purée, crispy shallots',price:'$29'},
+    about:['Cooking with what the coast gives us',
+      'Harbor Lane opened as a small corner spot with eight tables. Today our menu still changes with the seasons and follows what local farms and fishermen bring in each morning.',
+      'Come for a long dinner, a glass of wine at the bar or a weekend brunch on the patio.'],
+    menu:{
+      'Starters':[
+        ['Truffle Fries','Parmesan, herbs, garlic aioli','$9','veg'],
+        ['Burrata','Heirloom tomatoes, basil oil, sourdough','$14','veg'],
+        ['Clam Chowder','New England style, oyster crackers','$11'],
+        ['Tuna Crudo','Citrus, chili, crispy capers','$16','hot']],
+      'Mains':[
+        ['Steak Frites','8 oz hanger steak, peppercorn sauce','$32'],
+        ['Lobster Roll','Butter-toasted brioche, lemon mayo','$28'],
+        ['Mushroom Risotto','Wild mushrooms, parmesan, thyme','$22','veg'],
+        ['Roast Half Chicken','Garlic jus, seasonal greens','$25']],
+      'Desserts':[
+        ['Crème Brûlée','Vanilla bean, fresh berries','$10','veg'],
+        ['Chocolate Torte','Sea salt, whipped cream','$11','veg']],
+      'Drinks':[
+        ['House Red / White','By the glass','$12'],
+        ['Harbor Spritz','Aperol, prosecco, orange','$13'],
+        ['Craft Lemonade','Rosemary or classic','$5']]
+    }
+  },
+  taqueria: {
+    name:['Casa Verde',' Taqueria'], emoji:'🌮',
+    title:'Tacos made fresh, all day.',
+    text:'Hand-pressed tortillas, slow-cooked meats and salsas made every morning. Quick lunch or late-night bite.',
+    phone:'+1 (555) 010-7788', address:'450 Mission Ave, Austin, TX',
+    orderLabel:'Order Pickup', reserveLabel:'Book a Party',
+    orderUrl:'#', reserveUrl:'#',
+    holiday:'🎉 Taco Tuesday: 2 tacos for $6 all day.',
+    hours:[[10,21],[10,22],[10,22],[10,22],[10,24],[10,24],[10,24]],
+    special:{name:'Birria Tacos',desc:'Slow-braised beef, consommé for dipping, onion & cilantro',price:'$14'},
+    about:['Family recipes, made from scratch',
+      'Casa Verde started as a weekend taco stand. Our tortillas are still pressed by hand and our salsas are blended fresh every morning.',
+      'Grab a quick lunch, order pickup or bring the whole crew. We cater parties too.'],
+    menu:{
+      'Tacos':[
+        ['Al Pastor','Marinated pork, pineapple, onion, cilantro','$4.5'],
+        ['Carne Asada','Grilled steak, guacamole, pico de gallo','$5'],
+        ['Baja Fish','Beer-battered cod, chipotle slaw','$5'],
+        ['Rajas con Queso','Roasted poblano, cheese, crema','$4','veg'],
+        ['Chorizo Diablo','Spicy chorizo, potato, habanero salsa','$4.5','hot']],
+      'Bowls & Burritos':[
+        ['Burrito Grande','Rice, beans, choice of meat, cheese, salsa','$12'],
+        ['Veggie Bowl','Black beans, rice, grilled veggies, guac','$11','veg']],
+      'Sides':[
+        ['Chips & Guac','Made to order','$7','veg'],
+        ['Elote','Street corn, cotija, chili, lime','$5','hot']],
+      'Drinks':[
+        ['Horchata','Rice, cinnamon, vanilla','$4'],
+        ['Mexican Coke','Glass bottle','$3.5'],
+        ['Agua Fresca','Watermelon or hibiscus','$4']]
+    }
+  }
+};
+
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const DAYS=['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+const fmt=h=>{const H=h%24;return (H%12||12)+(H<12?' am':' pm')};
+
+function render(key){
+  const b=BRANDS[key]; document.body.dataset.brand=key;
+  const nameHTML=`${b.name[0]}<span>${b.name[1]}</span>`;
+  $('#brandName').innerHTML=nameHTML; $('#footBrand').innerHTML=nameHTML;
+  document.title=`${b.name.join('')} | Menu, Hours & Directions`;
+  $('#heroTitle').textContent=b.title; $('#heroText').textContent=b.text;
+  $('#spName').textContent=b.special.name; $('#spDesc').textContent=b.special.desc; $('#spPrice').textContent=b.special.price;
+  $('#aboutArt').textContent=b.emoji;
+  [$('#aboutTitle').textContent,$('#aboutText1').textContent,$('#aboutText2').textContent]=b.about;
+  $('#locName').textContent=b.name.join(''); $('#addr').textContent=b.address; $('#holiday').textContent=b.holiday;
+  $$('.js-phone').forEach(e=>e.textContent=b.phone);
+  const tel='tel:'+b.phone.replace(/[^\d+]/g,''), dir='https://www.google.com/maps/dir/?api=1&destination='+encodeURIComponent(b.address);
+  $$('.js-call').forEach(e=>e.href=tel);
+  $$('.js-dir').forEach(e=>e.href=dir);
+  $$('.js-order').forEach(e=>{e.textContent=b.orderLabel;e.href=b.orderUrl});
+  $$('.js-reserve').forEach(e=>{e.textContent=b.reserveLabel;e.href=b.reserveUrl});
+  $('#map').src='https://maps.google.com/maps?q='+encodeURIComponent(b.address)+'&output=embed';
+
+  // hours + open/closed status
+  const now=new Date(), d=now.getDay(), h=now.getHours()+now.getMinutes()/60;
+  $('#hours').innerHTML=b.hours.map((r,i)=>`<li class="${i===d?'today':''}"><span>${DAYS[i]}</span><span>${r?fmt(r[0])+' – '+fmt(r[1]):'Closed'}</span></li>`).join('');
+  const t=b.hours[d], open=t&&h>=t[0]&&h<t[1];
+  $('#dot').classList.toggle('closed',!open);
+  $('#statusText').textContent=open?`Open now · until ${fmt(t[1])}`:'Closed now';
+
+  // menu
+  const cats=Object.keys(b.menu);
+  $('#tabs').innerHTML=cats.map((c,i)=>`<button class="tab${i?'':' active'}" data-cat="${i}">${c}</button>`).join('');
+  $('#menuBody').innerHTML=cats.map((c,i)=>`
+    <div class="menu-cat" id="cat-${i}"><h3>${c}</h3><div class="items">${
+      b.menu[c].map(([n,ds,p,tag])=>`<div class="item"><div class="item-top"><span class="item-name">${n}</span>${
+        tag==='veg'?'<span class="badge veg">Veg</span>':tag==='hot'?'<span class="badge hot">Spicy</span>':''
+      }<span class="fill"></span><span class="item-price">${p}</span></div><div class="item-desc">${ds}</div></div>`).join('')
+    }</div></div>`).join('');
+  $$('.tab').forEach(t=>t.onclick=()=>{
+    $$('.tab').forEach(x=>x.classList.remove('active')); t.classList.add('active');
+    document.getElementById('cat-'+t.dataset.cat).scrollIntoView({behavior:'smooth'});
+  });
+  $$('.switcher button').forEach(x=>x.classList.toggle('on',x.dataset.b===key));
+}
+
+$$('.switcher button').forEach(x=>x.onclick=()=>{render(x.dataset.b);scrollTo({top:0,behavior:'smooth'})});
+$('#burger').onclick=()=>$('#links').classList.toggle('open');
+$$('#links a').forEach(a=>a.addEventListener('click',()=>$('#links').classList.remove('open')));
+render(new URLSearchParams(location.search).get('brand')==='taqueria'?'taqueria':'bistro');
+</script>
+</body>
+</html>
