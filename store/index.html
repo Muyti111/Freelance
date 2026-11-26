@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KINETIC — Sportswear & Sneakers (Demo Store)</title>
+<meta name="description" content="Demo sportswear store built with pure HTML, CSS and JavaScript.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;800;900&display=swap" rel="stylesheet">
+<style>
+/* ============ Base ============ */
+:root{--ink:#111;--muted:#707072;--line:#e5e5e5;--bg:#fff;--soft:#f5f5f5;--accent:#ff4d1a;--r:14px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Archivo,system-ui,sans-serif;color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+img,svg{display:block}
+.wrap{width:min(1280px,92%);margin:0 auto}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;padding:.95rem 1.7rem;border-radius:999px;font-weight:600;transition:transform .2s,background .2s,color .2s}
+.btn:hover{transform:translateY(-2px)}
+.btn:active{transform:translateY(0) scale(.98)}
+.btn-dark{background:var(--ink);color:#fff}.btn-dark:hover{background:#333}
+.btn-light{background:#fff;color:var(--ink)}
+.btn-line{border:1.5px solid var(--line)}.btn-line:hover{border-color:var(--ink)}
+.eyebrow{font-size:.8rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+h1,h2,h3{font-weight:900;letter-spacing:-.02em;line-height:.95;text-transform:uppercase}
+
+/* ============ Nav (sticky) ============ */
+.top-strip{background:var(--soft);text-align:center;font-size:.82rem;padding:.55rem;font-weight:500}
+header{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid transparent;transition:border-color .3s}
+header.scrolled{border-color:var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{font-weight:900;font-size:1.45rem;letter-spacing:-.04em;display:flex;align-items:center;gap:.35rem}
+.logo i{width:22px;height:22px;background:var(--accent);border-radius:50% 50% 50% 0;transform:rotate(-45deg);display:inline-block}
+.menu{display:flex;gap:2rem;font-weight:500}
+.menu a{position:relative;padding:.3rem 0}
+.menu a::after{content:"";position:absolute;left:0;right:0;bottom:-2px;height:2px;background:var(--ink);transform:scaleX(0);transition:transform .25s;transform-origin:left}
+.menu a:hover::after,.menu a.on::after{transform:scaleX(1)}
+.icons{display:flex;gap:.4rem;align-items:center}
+.icon-btn{width:42px;height:42px;border-radius:50%;display:grid;place-items:center;position:relative;transition:background .2s}
+.icon-btn:hover{background:var(--soft)}
+.icon-btn svg{width:22px;height:22px}
+.badge{position:absolute;top:3px;right:2px;min-width:18px;height:18px;border-radius:9px;background:var(--accent);color:#fff;font-size:.7rem;font-weight:700;display:grid;place-items:center;padding:0 4px;transform:scale(0);transition:transform .25s cubic-bezier(.3,1.6,.6,1)}
+.badge.on{transform:scale(1)}
+.burger{display:none}
+
+/* ============ Views ============ */
+.view{display:none;animation:fade .45s ease}
+.view.on{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+/* ============ Home ============ */
+.hero{position:relative;overflow:hidden;background:#0f0f10;color:#fff;border-radius:0 0 28px 28px}
+.hero-in{display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:min(78vh,720px);gap:2rem;padding:3rem 0}
+.hero h1{font-size:clamp(3rem,8vw,6.8rem);margin:.8rem 0 1.3rem}
+.hero h1 em{font-style:normal;color:var(--accent)}
+.hero p{color:#bdbdbd;max-width:430px;margin-bottom:2rem;font-size:1.08rem;line-height:1.6}
+.hero .eyebrow{color:#8d8d8d}
+.hero-art{position:relative;display:grid;place-items:center}
+.hero-art .ring{position:absolute;width:85%;aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#ff4d1a55,transparent 65%)}
+.hero-art svg{width:100%;max-width:560px;position:relative;animation:float 5s ease-in-out infinite;filter:drop-shadow(0 40px 40px rgba(0,0,0,.5))}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-8deg)}50%{transform:translateY(-18px) rotate(-5deg)}}
+.marquee{overflow:hidden;white-space:nowrap;border-top:1px solid #262626;padding:1rem 0;font-weight:800;font-size:1.05rem;letter-spacing:.05em;color:#6b6b6b}
+.marquee span{display:inline-block;animation:mq 22s linear infinite}
+@keyframes mq{to{transform:translateX(-50%)}}
+
+section{padding:5rem 0}
+.sec-head{display:flex;justify-content:space-between;align-items:end;margin-bottom:2rem;gap:1rem}
+.sec-head h2{font-size:clamp(2rem,4vw,3.2rem)}
+.cats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem}
+.cat{position:relative;border-radius:var(--r);overflow:hidden;aspect-ratio:4/5;background:var(--soft);display:flex;align-items:flex-end;padding:1.5rem}
+.cat svg{position:absolute;inset:8% 8% 22%;width:84%;height:70%;transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.cat:hover svg{transform:scale(1.07) rotate(-3deg)}
+.cat .btn{position:relative}
+
+/* product cards */
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.4rem}
+.card{cursor:pointer}
+.card .pic{background:var(--soft);border-radius:var(--r);aspect-ratio:1;display:grid;place-items:center;overflow:hidden;position:relative}
+.card .pic svg{width:78%;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.card:hover .pic svg{transform:scale(1.08) rotate(-4deg)}
+.card .tag{position:absolute;top:12px;left:12px;background:#fff;font-size:.72rem;font-weight:700;padding:.3rem .65rem;border-radius:999px}
+.card .quick{position:absolute;bottom:12px;left:12px;right:12px;opacity:0;transform:translateY(10px);transition:.3s}
+.card:hover .quick{opacity:1;transform:none}
+.card .quick .btn{width:100%;padding:.75rem}
+.card h3{font-size:1rem;text-transform:none;letter-spacing:0;font-weight:600;line-height:1.3;margin-top:.9rem}
+.card .sub{color:var(--muted);font-size:.92rem;margin:.15rem 0 .35rem}
+.card .price{font-weight:600}
+.swatches{display:flex;gap:.35rem;margin-top:.5rem}
+.sw{width:16px;height:16px;border-radius:50%;border:1px solid rgba(0,0,0,.15)}
+
+/* try the look */
+.look{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center;background:var(--soft);border-radius:24px;padding:2.5rem}
+.look-stage{position:relative;background:linear-gradient(160deg,#ececec,#dcdcdc);border-radius:18px;aspect-ratio:4/5;display:grid;place-items:center;overflow:hidden}
+.look-stage svg.model{height:92%}
+.hot{position:absolute;width:30px;height:30px;border-radius:50%;background:#fff;box-shadow:0 4px 14px rgba(0,0,0,.25);display:grid;place-items:center;font-weight:800;font-size:.85rem}
+.hot::before{content:"";position:absolute;inset:-6px;border-radius:50%;border:2px solid #fff;animation:pulse 2s infinite}
+@keyframes pulse{from{transform:scale(.8);opacity:1}to{transform:scale(1.6);opacity:0}}
+.look-list{display:flex;flex-direction:column;gap:.8rem;margin:1.5rem 0}
+.look-item{display:flex;align-items:center;gap:1rem;background:#fff;border-radius:12px;padding:.7rem;transition:transform .2s,box-shadow .2s}
+.look-item:hover{transform:translateX(6px);box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.look-item .mini{width:64px;height:64px;background:var(--soft);border-radius:10px;display:grid;place-items:center}
+.look-item .mini svg{width:80%}
+.look-item b{display:block}
+.look-item span{color:var(--muted);font-size:.9rem}
+.look-item .n{margin-left:auto;width:26px;height:26px;border-radius:50%;background:var(--ink);color:#fff;font-size:.75rem;display:grid;place-items:center;font-weight:700}
+
+/* ============ Shop ============ */
+.shop-top{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap;margin:2.5rem 0 1.5rem}
+.shop-top h1{font-size:clamp(2rem,4vw,3rem)}
+.filters{display:flex;gap:.5rem;flex-wrap:wrap}
+.chip{padding:.55rem 1.1rem;border-radius:999px;border:1.5px solid var(--line);font-weight:500;transition:.2s}
+.chip.on,.chip:hover{border-color:var(--ink)}
+.chip.on{background:var(--ink);color:#fff}
+.sort{padding:.6rem 1rem;border-radius:999px;border:1.5px solid var(--line);font:inherit;background:#fff}
+
+/* ============ Product page ============ */
+.pdp{display:grid;grid-template-columns:90px 1fr 420px;gap:1.5rem;margin:2.5rem 0 4rem;align-items:start}
+.thumbs{display:flex;flex-direction:column;gap:.6rem;position:sticky;top:90px}
+.thumb{width:90px;aspect-ratio:1;border-radius:10px;background:var(--soft);display:grid;place-items:center;border:2px solid transparent;transition:.2s;overflow:hidden}
+.thumb svg{width:80%}
+.thumb.on,.thumb:hover{border-color:var(--ink)}
+.stage{position:relative;background:var(--soft);border-radius:var(--r);aspect-ratio:1;overflow:hidden;cursor:zoom-in;display:grid;place-items:center}
+.stage svg{width:80%;transition:transform .15s ease-out}
+.stage.zoom svg{transform:scale(2)}
+.stage .arrow{position:absolute;top:50%;width:44px;height:44px;border-radius:50%;background:#fff;display:grid;place-items:center;transform:translateY(-50%);box-shadow:0 4px 14px rgba(0,0,0,.12);font-size:1.2rem;font-weight:700;z-index:2}
+.stage .prev{left:14px}.stage .next{right:14px}
+.stage .hint{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);background:#fff;padding:.35rem .8rem;border-radius:999px;font-size:.75rem;font-weight:600;color:var(--muted)}
+.info{position:sticky;top:90px}
+.info h1{font-size:1.9rem;text-transform:none;letter-spacing:-.01em;line-height:1.1;font-weight:800}
+.info .sub{color:var(--muted);margin:.4rem 0 1rem}
+.info .price{font-size:1.25rem;font-weight:600;margin-bottom:1.6rem}
+.opt-label{display:flex;justify-content:space-between;font-weight:600;margin:1.2rem 0 .6rem}
+.colors{display:flex;gap:.6rem}
+.color{width:42px;height:42px;border-radius:50%;border:2px solid #fff;box-shadow:0 0 0 1.5px var(--line);transition:.2s}
+.color.on{box-shadow:0 0 0 2px var(--ink)}
+.sizes{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem}
+.size{padding:.85rem 0;border:1.5px solid var(--line);border-radius:8px;font-weight:500;transition:.15s}
+.size:hover{border-color:var(--ink)}
+.size.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+.size-err{color:#d43f21;font-size:.85rem;margin-top:.5rem;display:none}
+.info .btn{width:100%;margin-top:.7rem;padding:1.1rem}
+.desc{margin-top:2rem;line-height:1.7;color:#333}
+.desc ul{margin:.8rem 0 0 1.1rem}
+
+/* ============ Cart drawer ============ */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.4);opacity:0;pointer-events:none;transition:opacity .3s;z-index:90}
+.overlay.on{opacity:1;pointer-events:auto}
+.drawer{position:fixed;top:0;right:0;bottom:0;width:min(440px,100%);background:#fff;z-index:100;transform:translateX(100%);transition:transform .45s cubic-bezier(.2,.8,.2,1);display:flex;flex-direction:column}
+.drawer.on{transform:none}
+.drawer-head{display:flex;justify-content:space-between;align-items:center;padding:1.3rem 1.5rem;border-bottom:1px solid var(--line)}
+.drawer-head h3{font-size:1.4rem}
+.drawer-body{flex:1;overflow:auto;padding:1rem 1.5rem}
+.line{display:grid;grid-template-columns:80px 1fr auto;gap:1rem;padding:1rem 0;border-bottom:1px solid var(--line);animation:fade .3s}
+.line .mini{background:var(--soft);border-radius:10px;aspect-ratio:1;display:grid;place-items:center}
+.line .mini svg{width:80%}
+.line b{display:block;font-weight:600}
+.line span{color:var(--muted);font-size:.88rem}
+.qty{display:flex;align-items:center;gap:.6rem;margin-top:.5rem}
+.qty button{width:28px;height:28px;border-radius:50%;border:1.5px solid var(--line);font-weight:700}
+.rm{color:var(--muted);font-size:.8rem;text-decoration:underline;margin-top:.4rem}
+.empty{text-align:center;color:var(--muted);padding:3rem 0}
+.drawer-foot{padding:1.3rem 1.5rem;border-top:1px solid var(--line)}
+.row{display:flex;justify-content:space-between;margin-bottom:.5rem}
+.row.total{font-weight:700;font-size:1.1rem;margin:.8rem 0 1rem}
+.drawer-foot .btn{width:100%;padding:1.05rem}
+.free{font-size:.85rem;color:var(--muted);margin-bottom:.8rem}
+.bar{height:5px;background:var(--soft);border-radius:3px;overflow:hidden;margin-top:.4rem}
+.bar i{display:block;height:100%;background:var(--accent);transition:width .4s}
+
+/* ============ Checkout ============ */
+.checkout{display:grid;grid-template-columns:1fr 400px;gap:3rem;margin:2.5rem 0 4rem;align-items:start}
+.checkout h1{font-size:2.2rem;margin-bottom:1.5rem}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}
+.fgrid .full{grid-column:1/-1}
+.field label{display:block;font-size:.85rem;font-weight:600;margin-bottom:.35rem}
+.field input,.field select{width:100%;padding:.95rem 1rem;border:1.5px solid var(--line);border-radius:10px;font:inherit;transition:border-color .2s}
+.field input:focus,.field select:focus{outline:none;border-color:var(--ink)}
+.field.err input{border-color:#d43f21}
+.ship-opts{display:grid;gap:.6rem}
+.ship{display:flex;justify-content:space-between;align-items:center;border:1.5px solid var(--line);border-radius:10px;padding:1rem;cursor:pointer}
+.ship.on{border-color:var(--ink)}
+.summary{background:var(--soft);border-radius:var(--r);padding:1.5rem;position:sticky;top:90px}
+.summary h3{font-size:1.2rem;margin-bottom:1rem}
+.done{text-align:center;padding:5rem 0}
+.done .check{width:84px;height:84px;border-radius:50%;background:var(--ink);color:#fff;display:grid;place-items:center;margin:0 auto 1.5rem;font-size:2.2rem;animation:pop .5s cubic-bezier(.3,1.6,.6,1)}
+@keyframes pop{from{transform:scale(0)}to{transform:scale(1)}}
+.done h1{font-size:clamp(2.2rem,5vw,3.5rem);margin-bottom:1rem}
+.done p{color:var(--muted);margin-bottom:2rem}
+
+/* ============ Footer / toast ============ */
+footer{background:#0f0f10;color:#9b9b9b;padding:3.5rem 0 2rem;margin-top:3rem;font-size:.9rem}
+.foot{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:2rem;margin-bottom:2rem}
+.foot h4{color:#fff;font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem}
+.foot li{list-style:none;margin-bottom:.45rem}
+.foot a:hover{color:#fff}
+.foot .logo{color:#fff;margin-bottom:.6rem}
+.copy{border-top:1px solid #262626;padding-top:1.5rem;font-size:.82rem}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,120px);background:var(--ink);color:#fff;padding:.9rem 1.4rem;border-radius:999px;font-weight:600;z-index:120;transition:transform .4s cubic-bezier(.3,1.4,.6,1)}
+.toast.on{transform:translate(-50%,0)}
+
+/* ============ Responsive ============ */
+@media(max-width:1024px){
+  .grid{grid-template-columns:repeat(3,1fr)}
+  .pdp{grid-template-columns:1fr;}
+  .thumbs{flex-direction:row;position:static;order:2}
+  .thumb{width:72px}
+  .info{position:static}
+  .checkout{grid-template-columns:1fr}
+  .summary{position:static}
+}
+@media(max-width:760px){
+  .menu{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;flex-direction:column;padding:1.5rem 4%;gap:1.1rem;border-bottom:1px solid var(--line);font-size:1.2rem}
+  .menu.open{display:flex}
+  .burger{display:grid}
+  .hero-in{grid-template-columns:1fr;text-align:left;padding:2.5rem 0 1rem}
+  .hero-art{order:-1}.hero-art svg{max-width:340px}
+  .cats{grid-template-columns:1fr 1fr}
+  .cats .cat:last-child{grid-column:1/-1;aspect-ratio:16/9}
+  .grid{grid-template-columns:repeat(2,1fr);gap:1rem}
+  .card .quick{display:none}
+  .look{grid-template-columns:1fr;padding:1.2rem}
+  .fgrid{grid-template-columns:1fr}
+  .foot{grid-template-columns:1fr 1fr}
+  section{padding:3.5rem 0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+
+<div class="top-strip">Free shipping on orders over $100 · 30-day free returns</div>
+
+<header id="hdr">
+  <div class="wrap nav">
+    <a href="#/" class="logo"><i></i>KINETIC</a>
+    <nav class="menu" id="menu">
+      <a href="#/shop/sneakers" data-nav="sneakers">Sneakers</a>
+      <a href="#/shop/apparel" data-nav="apparel">Apparel</a>
+      <a href="#/shop/all" data-nav="all">Shop All</a>
+      <a href="#/#look" data-nav="look">Try the Look</a>
+    </nav>
+    <div class="icons">
+      <button class="icon-btn" id="cartBtn" aria-label="Open cart">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M5 8h14l-1.2 11.2a2 2 0 0 1-2 1.8H8.2a2 2 0 0 1-2-1.8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
+        <span class="badge" id="badge">0</span>
+      </button>
+      <button class="icon-btn burger" id="burger" aria-label="Menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <!-- HOME -->
+  <div class="view" id="v-home">
+    <div class="hero">
+      <div class="wrap hero-in">
+        <div>
+          <span class="eyebrow">New Season · Velocity Collection</span>
+          <h1>Move<br>like it's <em>yours.</em></h1>
+          <p>Lightweight sneakers and performance apparel built for training, running and everything in between.</p>
+          <div style="display:flex;gap:.7rem;flex-wrap:wrap">
+            <a href="#/product/velo-runner" class="btn btn-light">Shop Velo Runner</a>
+            <a href="#/shop/all" class="btn" style="border:1.5px solid #444;color:#fff">Explore All</a>
+          </div>
+        </div>
+        <div class="hero-art"><div class="ring"></div><div id="heroShoe"></div></div>
+      </div>
+      <div class="marquee"><span>RUN · TRAIN · RECOVER · REPEAT · RUN · TRAIN · RECOVER · REPEAT · RUN · TRAIN · RECOVER · REPEAT · RUN · TRAIN · RECOVER · REPEAT · </span></div>
+    </div>
+
+    <section class="wrap">
+      <div class="sec-head"><h2>Shop by<br>category</h2></div>
+      <div class="cats" id="cats"></div>
+    </section>
+
+    <section class="wrap" style="padding-top:0">
+      <div class="sec-head"><h2>Trending<br>now</h2><a href="#/shop/all" class="btn btn-line">View all</a></div>
+      <div class="grid" id="trending"></div>
+    </section>
+
+    <section class="wrap" id="look" style="padding-top:0">
+      <div class="look">
+        <div class="look-stage" id="lookStage"></div>
+        <div>
+          <span class="eyebrow">Try the Look</span>
+          <h2 style="font-size:clamp(2rem,4vw,3rem);margin:.6rem 0 .4rem">Morning<br>Tempo Run</h2>
+          <p style="color:var(--muted)">One full outfit, every piece one tap away.</p>
+          <div class="look-list" id="lookList"></div>
+          <button class="btn btn-dark" id="addLook">Add full look to cart</button>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!-- SHOP -->
+  <div class="view" id="v-shop">
+    <div class="wrap">
+      <div class="shop-top">
+        <h1 id="shopTitle">Shop All</h1>
+        <div class="filters" id="filters"></div>
+        <select class="sort" id="sort" aria-label="Sort">
+          <option value="feat">Featured</option>
+          <option value="low">Price: Low to High</option>
+          <option value="high">Price: High to Low</option>
+        </select>
+      </div>
+      <div class="grid" id="shopGrid" style="margin-bottom:4rem"></div>
+    </div>
+  </div>
+
+  <!-- PRODUCT -->
+  <div class="view" id="v-product"><div class="wrap" id="pdp"></div></div>
+
+  <!-- CHECKOUT -->
+  <div class="view" id="v-checkout"><div class="wrap" id="checkout"></div></div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div><div class="logo"><i></i>KINETIC</div><p>Demo storefront with a fictional brand.<br>Pure HTML, CSS & JavaScript.</p></div>
+      <div><h4>Shop</h4><ul><li><a href="#/shop/sneakers">Sneakers</a></li><li><a href="#/shop/apparel">Apparel</a></li><li><a href="#/shop/all">All products</a></li></ul></div>
+      <div><h4>Help</h4><ul><li><a href="#/">Shipping</a></li><li><a href="#/">Returns</a></li><li><a href="#/">Size guide</a></li></ul></div>
+      <div><h4>Company</h4><ul><li><a href="#/">About</a></li><li><a href="#/">Contact</a></li></ul></div>
+    </div>
+    <div class="copy">© 2026 KINETIC (demo). Not a real store; no payments are processed.</div>
+  </div>
+</footer>
+
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-label="Cart">
+  <div class="drawer-head"><h3>Your Bag</h3><button class="icon-btn" id="closeCart" aria-label="Close cart">✕</button></div>
+  <div class="drawer-body" id="cartBody"></div>
+  <div class="drawer-foot" id="cartFoot"></div>
+</aside>
+<div class="toast" id="toast"></div>
+
+<script>
+/* =========================================================
+   PRODUCT DATA
+   Swap this array for your own JSON (or fetch('products.json')).
+   ========================================================= */
+const PRODUCTS = [
+  {id:"velo-runner", name:"Velo Runner", cat:"sneakers", type:"shoe", sub:"Men's Road Running Shoes", price:139, tag:"Bestseller",
+   colors:[{n:"Volt Orange",c:"#ff4d1a",a:"#111"},{n:"Triple Black",c:"#1c1c1c",a:"#ff4d1a"},{n:"Sail",c:"#eeeae2",a:"#2b59ff"}],
+   sizes:["7","8","9","10","11","12","13","14"],
+   desc:"Responsive foam and a breathable engineered mesh upper keep you light on long runs.", bullets:["Engineered mesh upper","Full-length responsive foam","Rubber outsole with flex grooves","Weight: 260 g (size 9)"]},
+  {id:"pulse-trainer", name:"Pulse Trainer", cat:"sneakers", type:"shoe", sub:"Women's Training Shoes", price:119, tag:"New",
+   colors:[{n:"Ice Blue",c:"#9ec9ff",a:"#fff"},{n:"Pink Foam",c:"#ffb3c7",a:"#1c1c1c"},{n:"White",c:"#f7f7f7",a:"#111"}],
+   sizes:["5","6","7","8","9","10","11"],
+   desc:"A wide, stable base for lifting days and a cushioned forefoot for HIIT.", bullets:["Wide stable heel","Flexible forefoot","Durable toe wrap"]},
+  {id:"court-low", name:"Court Low", cat:"sneakers", type:"shoe", sub:"Lifestyle Sneakers", price:99,
+   colors:[{n:"White/Green",c:"#fafafa",a:"#1f8a4c"},{n:"Black/Gum",c:"#202020",a:"#c08a4a"}],
+   sizes:["7","8","9","10","11","12"],
+   desc:"Clean court-inspired silhouette with a soft leather-feel upper.", bullets:["Cupsole construction","Padded collar","Everyday comfort"]},
+  {id:"stride-trail", name:"Stride Trail", cat:"sneakers", type:"shoe", sub:"Trail Running Shoes", price:149, tag:"Waterproof",
+   colors:[{n:"Olive",c:"#5b6b3a",a:"#ff9d00"},{n:"Slate",c:"#4a5563",a:"#9dfc4a"}],
+   sizes:["7","8","9","10","11","12","13"],
+   desc:"Grippy lugs and a water-resistant upper for muddy trails.", bullets:["4 mm lugs","Water-resistant upper","Rock plate"]},
+  {id:"aero-tee", name:"Aero Dri Tee", cat:"apparel", type:"tee", sub:"Men's Running Top", price:35,
+   colors:[{n:"Black",c:"#1c1c1c"},{n:"Volt Orange",c:"#ff4d1a"},{n:"Grey Heather",c:"#a7a9ad"}],
+   sizes:["XS","S","M","L","XL","XXL"],
+   desc:"Sweat-wicking fabric that dries fast and stays light.", bullets:["Quick-dry fabric","Reflective details","Regular fit"]},
+  {id:"core-hoodie", name:"Core Fleece Hoodie", cat:"apparel", type:"hoodie", sub:"Unisex Hoodie", price:69, tag:"Bestseller",
+   colors:[{n:"Charcoal",c:"#3a3a3c"},{n:"Sand",c:"#d9c7a7"},{n:"Cobalt",c:"#2b59ff"}],
+   sizes:["XS","S","M","L","XL","XXL"],
+   desc:"Brushed-back fleece for warm-ups, cool-downs and everything between.", bullets:["Brushed fleece","Kangaroo pocket","Relaxed fit"]},
+  {id:"flex-short", name:"Flex 7\" Shorts", cat:"apparel", type:"shorts", sub:"Men's Training Shorts", price:40,
+   colors:[{n:"Black",c:"#1c1c1c"},{n:"Navy",c:"#1d2a4d"},{n:"Olive",c:"#5b6b3a"}],
+   sizes:["S","M","L","XL","XXL"],
+   desc:"4-way stretch shorts with a built-in liner and zip pocket.", bullets:["4-way stretch","Zip pocket","7\" inseam"]},
+  {id:"wind-jacket", name:"Windrunner Shell", cat:"apparel", type:"hoodie", sub:"Lightweight Jacket", price:89, tag:"New",
+   colors:[{n:"Volt Orange",c:"#ff4d1a"},{n:"Black",c:"#1c1c1c"}],
+   sizes:["S","M","L","XL"],
+   desc:"Packable wind- and water-resistant shell for changing weather.", bullets:["Packs into pocket","Water-repellent finish","Adjustable hood"]}
+];
+const LOOK = ["aero-tee","flex-short","velo-runner"]; // "Try the Look" outfit
+
+/* =========================================================
+   SVG ILLUSTRATIONS (no external images; colors swap live)
+   ========================================================= */
+function shoeSVG(c, a="#111", view=0){
+  const vb = ["0 0 400 220","40 20 220 150","180 60 220 160"][view];
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg">
+  <path d="M30 170 Q28 150 48 140 L140 108 Q170 70 205 62 L238 60 Q258 92 300 104 L350 116 Q384 126 380 162 L378 176 Q376 190 360 190 L48 190 Q30 190 30 170Z" fill="${c}"/>
+  <path d="M32 172 L378 170 L376 184 Q374 196 358 196 L50 196 Q32 196 32 182Z" fill="#f2f2f2"/>
+  <path d="M32 186 L376 186" stroke="#d6d6d6" stroke-width="3"/>
+  <path d="M120 150 Q200 120 300 132 Q250 150 150 162Z" fill="${a}" opacity=".9"/>
+  <path d="M205 62 L238 60 Q248 80 262 92 L222 98Z" fill="rgba(0,0,0,.12)"/>
+  <g stroke="#fff" stroke-width="4" stroke-linecap="round" opacity=".85"><path d="M178 92 L196 86"/><path d="M170 104 L192 96"/><path d="M162 116 L188 106"/></g>
+  <circle cx="352" cy="150" r="5" fill="${a}"/>
+  </svg>`;
+}
+function teeSVG(c, view=0){
+  const vb=["0 0 300 300","60 40 180 180","20 0 260 260"][view];
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg"><path d="M95 40 Q150 70 205 40 L270 75 L245 130 L215 115 L215 265 L85 265 L85 115 L55 130 L30 75Z" fill="${c}"/><path d="M118 42 Q150 62 182 42" fill="none" stroke="rgba(0,0,0,.18)" stroke-width="6"/><path d="M130 120 l40 -10" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".8"/></svg>`;
+}
+function hoodieSVG(c, view=0){
+  const vb=["0 0 300 300","50 10 200 200","20 60 260 240"][view];
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg"><path d="M105 55 Q150 5 195 55 L270 95 L250 190 L222 180 L222 275 L78 275 L78 180 L50 190 L30 95Z" fill="${c}"/><path d="M118 58 Q150 30 182 58 Q150 95 118 58Z" fill="rgba(0,0,0,.25)"/><path d="M110 215 L190 215 L180 250 L120 250Z" fill="rgba(0,0,0,.12)"/><path d="M140 70 L138 110 M160 70 L162 110" stroke="rgba(255,255,255,.8)" stroke-width="3"/></svg>`;
+}
+function shortsSVG(c, view=0){
+  const vb=["0 0 300 300","40 40 220 200","0 20 300 280"][view];
+  return `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg"><path d="M70 70 L230 70 L255 235 L165 245 L150 140 L135 245 L45 235Z" fill="${c}"/><rect x="70" y="62" width="160" height="22" rx="6" fill="rgba(0,0,0,.25)"/><path d="M215 170 l18 -4" stroke="#fff" stroke-width="5" stroke-linecap="round" opacity=".8"/></svg>`;
+}
+function art(p, colorIdx=0, view=0){
+  const col=p.colors[colorIdx];
+  if(p.type==="shoe") return shoeSVG(col.c, col.a, view);
+  if(p.type==="tee") return teeSVG(col.c, view);
+  if(p.type==="hoodie") return hoodieSVG(col.c, view);
+  return shortsSVG(col.c, view);
+}
+function modelSVG(){
+  const t=PRODUCTS.find(p=>p.id==="aero-tee").colors[0].c, s=PRODUCTS.find(p=>p.id==="flex-short").colors[1].c, sh=PRODUCTS.find(p=>p.id==="velo-runner").colors[0];
+  return `<svg class="model" viewBox="0 0 200 420" xmlns="http://www.w3.org/2000/svg">
+  <circle cx="100" cy="38" r="24" fill="#c99a78"/><rect x="90" y="58" width="20" height="14" fill="#c99a78"/>
+  <path d="M62 72 Q100 64 138 72 L160 150 L146 156 L132 110 L132 190 L68 190 L68 110 L54 156 L40 150Z" fill="${t}"/>
+  <path d="M40 150 L54 156 L58 205 L46 205Z M160 150 L146 156 L142 205 L154 205Z" fill="#c99a78"/>
+  <path d="M68 188 L132 188 L138 255 L104 258 L100 215 L96 258 L62 255Z" fill="${s}"/>
+  <path d="M66 255 L96 257 L94 360 L72 360Z M104 257 L134 255 L128 360 L106 360Z" fill="#c99a78"/>
+  <path d="M60 360 L96 356 Q100 372 96 380 L56 380 Q52 368 60 360Z" fill="${sh.c}"/><path d="M104 356 L140 360 Q148 368 144 380 L104 380 Q100 372 104 356Z" fill="${sh.c}"/>
+  <path d="M56 378 L96 378 M104 378 L144 378" stroke="#eee" stroke-width="5"/>
+  </svg>`;
+}
+
+/* =========================================================
+   CART (saved in localStorage so it survives reloads)
+   ========================================================= */
+const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
+const money=n=>"$"+n.toFixed(2).replace(/\.00$/,"");
+let cart=[]; try{cart=JSON.parse(localStorage.getItem("kinetic-cart"))||[]}catch(e){}
+const save=()=>{try{localStorage.setItem("kinetic-cart",JSON.stringify(cart))}catch(e){}};
+const byId=id=>PRODUCTS.find(p=>p.id===id);
+const subtotal=()=>cart.reduce((s,l)=>s+byId(l.id).price*l.q,0);
+const count=()=>cart.reduce((s,l)=>s+l.q,0);
+
+function addToCart(id,color,size,q=1,silent){
+  const ex=cart.find(l=>l.id===id&&l.color===color&&l.size===size);
+  ex?ex.q+=q:cart.push({id,color,size,q});
+  save(); renderCart();
+  const b=$("#badge"); b.animate([{transform:"scale(1.6)"},{transform:"scale(1)"}],{duration:350});
+  if(!silent) toast(`Added ${byId(id).name} to bag`);
+}
+function renderCart(){
+  const n=count(); $("#badge").textContent=n; $("#badge").classList.toggle("on",n>0);
+  if(!cart.length){
+    $("#cartBody").innerHTML=`<div class="empty"><p style="font-size:2.5rem">👟</p><p>Your bag is empty.</p></div>`;
+    $("#cartFoot").innerHTML=`<a href="#/shop/all" class="btn btn-dark" onclick="closeCart()">Start shopping</a>`; return;
+  }
+  $("#cartBody").innerHTML=cart.map((l,i)=>{const p=byId(l.id);return `
+    <div class="line"><div class="mini">${art(p,l.color)}</div>
+      <div><b>${p.name}</b><span>${p.colors[l.color].n} · Size ${l.size}</span>
+        <div class="qty"><button onclick="setQ(${i},-1)" aria-label="Decrease">−</button>${l.q}<button onclick="setQ(${i},1)" aria-label="Increase">+</button></div>
+        <button class="rm" onclick="setQ(${i},-999)">Remove</button></div>
+      <div style="font-weight:600">${money(p.price*l.q)}</div></div>`}).join("");
+  const st=subtotal(), left=Math.max(0,100-st);
+  $("#cartFoot").innerHTML=`
+    <div class="free">${left?`You're ${money(left)} away from free shipping`:"🎉 You've unlocked free shipping"}<div class="bar"><i style="width:${Math.min(100,st)}%"></i></div></div>
+    <div class="row"><span>Subtotal</span><span>${money(st)}</span></div>
+    <div class="row"><span>Shipping</span><span>${left?"$8":"Free"}</span></div>
+    <div class="row total"><span>Total</span><span>${money(st+(left?8:0))}</span></div>
+    <a href="#/checkout" class="btn btn-dark" onclick="closeCart()">Checkout</a>`;
+}
+function setQ(i,d){cart[i].q+=d; if(cart[i].q<=0) cart.splice(i,1); save(); renderCart(); if(location.hash==="#/checkout") route();}
+function openCart(){$("#drawer").classList.add("on");$("#overlay").classList.add("on")}
+function closeCart(){$("#drawer").classList.remove("on");$("#overlay").classList.remove("on")}
+function toast(t){const el=$("#toast");el.textContent=t;el.classList.add("on");clearTimeout(el._t);el._t=setTimeout(()=>el.classList.remove("on"),2200)}
+
+/* =========================================================
+   VIEWS
+   ========================================================= */
+function card(p){
+  return `<article class="card" onclick="location.hash='#/product/${p.id}'">
+    <div class="pic">${p.tag?`<span class="tag">${p.tag}</span>`:""}${art(p)}
+      <div class="quick"><button class="btn btn-dark" onclick="event.stopPropagation();location.hash='#/product/${p.id}'">Choose size</button></div></div>
+    <h3>${p.name}</h3><div class="sub">${p.sub}</div><div class="price">${money(p.price)}</div>
+    <div class="swatches">${p.colors.map(c=>`<span class="sw" style="background:${c.c}" title="${c.n}"></span>`).join("")}</div>
+  </article>`;
+}
+function home(){
+  $("#heroShoe").innerHTML=shoeSVG("#ff4d1a","#fff");
+  $("#cats").innerHTML=[["sneakers","Sneakers",shoeSVG("#2b59ff","#fff")],["apparel","Apparel",hoodieSVG("#3a3a3c")],["all","New Arrivals",teeSVG("#ff4d1a")]]
+    .map(([k,t,s])=>`<a class="cat" href="#/shop/${k}">${s}<span class="btn btn-light">${t}</span></a>`).join("");
+  $("#trending").innerHTML=PRODUCTS.filter(p=>p.tag).slice(0,4).map(card).join("");
+  const spots=[[50,30],[54,52],[34,88]];
+  $("#lookStage").innerHTML=modelSVG()+LOOK.map((id,i)=>`<a class="hot" href="#/product/${id}" style="left:${spots[i][0]}%;top:${spots[i][1]}%" title="${byId(id).name}">${i+1}</a>`).join("");
+  const lookColor={"aero-tee":0,"flex-short":1,"velo-runner":0};
+  $("#lookList").innerHTML=LOOK.map((id,i)=>{const p=byId(id);return `<a class="look-item" href="#/product/${id}"><div class="mini">${art(p,lookColor[id])}</div><div><b>${p.name}</b><span>${money(p.price)}</span></div><span class="n">${i+1}</span></a>`}).join("");
+  $("#addLook").onclick=()=>{LOOK.forEach(id=>{const p=byId(id);addToCart(id,lookColor[id],p.sizes[Math.floor(p.sizes.length/2)],1,true)});toast("Full look added (default sizes)");openCart()};
+}
+let shopState={cat:"all",sort:"feat"};
+function shop(cat){
+  shopState.cat=cat||"all";
+  $("#shopTitle").textContent={all:"Shop All",sneakers:"Sneakers",apparel:"Apparel"}[shopState.cat];
+  $("#filters").innerHTML=["all","sneakers","apparel"].map(k=>`<a class="chip ${k===shopState.cat?"on":""}" href="#/shop/${k}">${k[0].toUpperCase()+k.slice(1)}</a>`).join("");
+  let list=PRODUCTS.filter(p=>shopState.cat==="all"||p.cat===shopState.cat);
+  if(shopState.sort==="low") list=[...list].sort((a,b)=>a.price-b.price);
+  if(shopState.sort==="high") list=[...list].sort((a,b)=>b.price-a.price);
+  $("#shopGrid").innerHTML=list.map(card).join("");
+}
+$("#sort").onchange=e=>{shopState.sort=e.target.value;shop(shopState.cat)};
+
+function product(id){
+  const p=byId(id); if(!p){location.hash="#/shop/all";return}
+  let ci=0, view=0, size=null;
+  const draw=()=>{
+    $("#pdp").innerHTML=`<div class="pdp">
+      <div class="thumbs">${[0,1,2].map(v=>`<button class="thumb ${v===view?"on":""}" data-v="${v}" aria-label="View ${v+1}">${art(p,ci,v)}</button>`).join("")}</div>
+      <div class="stage" id="stage"><button class="arrow prev" aria-label="Previous">‹</button>${art(p,ci,view)}<button class="arrow next" aria-label="Next">›</button><span class="hint">Click to zoom</span></div>
+      <div class="info">
+        <span class="eyebrow">${p.tag||p.cat}</span>
+        <h1>${p.name}</h1><div class="sub">${p.sub}</div><div class="price">${money(p.price)}</div>
+        <div class="opt-label"><span>Color</span><span style="font-weight:400;color:var(--muted)">${p.colors[ci].n}</span></div>
+        <div class="colors">${p.colors.map((c,i)=>`<button class="color ${i===ci?"on":""}" data-c="${i}" style="background:${c.c}" aria-label="${c.n}"></button>`).join("")}</div>
+        <div class="opt-label"><span>Select Size</span><span style="font-weight:400;color:var(--muted)">Size guide</span></div>
+        <div class="sizes">${p.sizes.map(s=>`<button class="size ${s===size?"on":""}" data-s="${s}">${s}</button>`).join("")}</div>
+        <div class="size-err" id="sizeErr">Please select a size.</div>
+        <button class="btn btn-dark" id="add">Add to Bag</button>
+        <button class="btn btn-line" id="buy">Buy Now</button>
+        <div class="desc"><p>${p.desc}</p><ul>${p.bullets.map(b=>`<li>${b}</li>`).join("")}</ul></div>
+      </div></div>
+      <section style="padding-top:0"><div class="sec-head"><h2>You might<br>also like</h2></div>
+      <div class="grid">${PRODUCTS.filter(x=>x.id!==p.id).slice(0,4).map(card).join("")}</div></section>`;
+    $$(".thumb").forEach(b=>b.onclick=()=>{view=+b.dataset.v;draw()});
+    $$(".color").forEach(b=>b.onclick=()=>{ci=+b.dataset.c;draw()});
+    $$(".size").forEach(b=>b.onclick=()=>{size=b.dataset.s;draw()});
+    $(".prev").onclick=e=>{e.stopPropagation();view=(view+2)%3;draw()};
+    $(".next").onclick=e=>{e.stopPropagation();view=(view+1)%3;draw()};
+    const st=$("#stage"), svg=st.querySelector("svg");
+    st.onclick=()=>st.classList.toggle("zoom");
+    st.onmousemove=e=>{const r=st.getBoundingClientRect();svg.style.transformOrigin=`${(e.clientX-r.left)/r.width*100}% ${(e.clientY-r.top)/r.height*100}%`};
+    const need=()=>{if(!size){$("#sizeErr").style.display="block";return false}return true};
+    $("#add").onclick=()=>{if(need()){addToCart(p.id,ci,size);openCart()}};
+    $("#buy").onclick=()=>{if(need()){addToCart(p.id,ci,size,1,true);location.hash="#/checkout"}};
+  };
+  draw();
+}
+
+function checkout(){
+  if(!cart.length){$("#checkout").innerHTML=`<div class="done"><h1>Your bag is empty</h1><a class="btn btn-dark" href="#/shop/all">Shop now</a></div>`;return}
+  let ship=8;
+  const st=subtotal(); if(st>=100) ship=0;
+  const draw=()=>{
+    $("#checkout").innerHTML=`<div class="checkout"><form id="cf" novalidate><h1>Checkout</h1>
+      <div class="fgrid">
+        <div class="field full"><label>Email</label><input name="email" type="email" required autocomplete="email"></div>
+        <div class="field"><label>First name</label><input name="first" required autocomplete="given-name"></div>
+        <div class="field"><label>Last name</label><input name="last" required autocomplete="family-name"></div>
+        <div class="field full"><label>Address</label><input name="addr" required autocomplete="street-address"></div>
+        <div class="field"><label>City</label><input name="city" required autocomplete="address-level2"></div>
+        <div class="field"><label>ZIP</label><input name="zip" required autocomplete="postal-code"></div>
+      </div>
+      <h3 style="margin:2rem 0 1rem;font-size:1.2rem">Delivery</h3>
+      <div class="ship-opts">
+        <label class="ship ${ship!==20?"on":""}"><span><input type="radio" name="ship" value="std" ${ship!==20?"checked":""}> Standard (3–5 days)</span><b>${st>=100?"Free":"$8"}</b></label>
+        <label class="ship ${ship===20?"on":""}"><span><input type="radio" name="ship" value="exp" ${ship===20?"checked":""}> Express (1–2 days)</span><b>$20</b></label>
+      </div>
+      <p style="color:var(--muted);font-size:.85rem;margin-top:1.2rem">Demo checkout: no payment is taken. Plug in Stripe Checkout / PayPal here.</p>
+      <button class="btn btn-dark" style="width:100%;margin-top:1rem;padding:1.1rem" type="submit">Place Order</button></form>
+      <aside class="summary"><h3>Order Summary</h3>${cart.map(l=>{const p=byId(l.id);return `<div class="row"><span>${p.name} × ${l.q}</span><span>${money(p.price*l.q)}</span></div>`}).join("")}
+        <hr style="border:0;border-top:1px solid #ddd;margin:.8rem 0">
+        <div class="row"><span>Subtotal</span><span>${money(st)}</span></div>
+        <div class="row"><span>Delivery</span><span>${ship?money(ship):"Free"}</span></div>
+        <div class="row total"><span>Total</span><span>${money(st+ship)}</span></div></aside></div>`;
+    $$('input[name="ship"]').forEach(r=>r.onchange=()=>{ship=r.value==="exp"?20:(st>=100?0:8);draw()});
+    $("#cf").onsubmit=e=>{
+      e.preventDefault(); let ok=true;
+      e.target.querySelectorAll("[required]").forEach(i=>{const bad=!i.value.trim()||(i.type==="email"&&!/^\S+@\S+\.\S+$/.test(i.value));i.parentElement.classList.toggle("err",bad);if(bad)ok=false});
+      if(!ok){toast("Please fill in the highlighted fields");return}
+      const num="KN-"+Math.floor(100000+Math.random()*900000);
+      cart=[];save();renderCart();
+      $("#checkout").innerHTML=`<div class="done"><div class="check">✓</div><h1>Order placed!</h1><p>Order ${num} confirmed. A receipt would be sent to your email.</p><a class="btn btn-dark" href="#/">Back to home</a></div>`;
+      scrollTo(0,0);
+    };
+  };
+  draw();
+}
+
+/* =========================================================
+   ROUTER (hash-based, so it works on any static host)
+   ========================================================= */
+function show(v){$$(".view").forEach(x=>x.classList.toggle("on",x.id==="v-"+v))}
+function route(){
+  const h=location.hash.replace(/^#\/?/,""); const [page,arg]=h.split("/");
+  $$(".menu a").forEach(a=>a.classList.toggle("on",page==="shop"&&a.dataset.nav===(arg||"all")));
+  $("#menu").classList.remove("open");
+  if(page==="shop"){show("shop");shop(arg)}
+  else if(page==="product"){show("product");product(arg)}
+  else if(page==="checkout"){show("checkout");checkout()}
+  else{show("home");home(); if(h.includes("look")) setTimeout(()=>$("#look").scrollIntoView({behavior:"smooth"}),60); return}
+  scrollTo({top:0});
+}
+window.addEventListener("hashchange",route);
+window.addEventListener("scroll",()=>$("#hdr").classList.toggle("scrolled",scrollY>10));
+$("#cartBtn").onclick=openCart; $("#closeCart").onclick=closeCart; $("#overlay").onclick=closeCart;
+$("#burger").onclick=()=>$("#menu").classList.toggle("open");
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart()});
+renderCart(); route();
+</script>
+</body>
+</html>
