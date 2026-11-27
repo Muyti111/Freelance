@@ -43,7 +43,7 @@ header.scrolled{border-color:var(--line);box-shadow:0 8px 30px -20px rgba(0,0,0,
 .logo .mark{width:36px;height:36px;border-radius:11px;background:var(--green);display:grid;place-items:center}
 .logo .mark svg{width:20px;height:20px}
 .menu{display:flex;align-items:center;gap:.3rem;font-weight:500;font-size:.95rem}
-.menu>a,.menu .dd>button{padding:.55rem .85rem;border-radius:999px;transition:background .2s}
+.menu>a,.menu .dd>button{white-space:nowrap;padding:.55rem .85rem;border-radius:999px;transition:background .2s}
 .menu>a:hover,.menu .dd>button:hover,.menu a.on,.menu .dd.on>button{background:var(--cream-2)}
 .dd{position:relative}
 .dd>button{display:flex;align-items:center;gap:.3rem}
@@ -78,7 +78,7 @@ header.scrolled{border-color:var(--line);box-shadow:0 8px 30px -20px rgba(0,0,0,
 .hero-art svg.scene{position:absolute;inset:0;width:100%;height:100%}
 .float-card{position:absolute;background:var(--paper);border-radius:16px;padding:1rem 1.1rem;box-shadow:0 20px 40px -18px rgba(0,0,0,.35);font-size:.85rem;animation:bob 6s ease-in-out infinite}
 .float-card b{font-family:Fraunces;font-size:1.5rem;color:var(--green);display:block;line-height:1}
-.fc1{left:-26px;bottom:18%}.fc2{right:-18px;top:14%;animation-delay:-3s}
+.fc1{left:14px;bottom:16%}.fc2{right:14px;top:12%;animation-delay:-3s}
 @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
 .bar{height:6px;border-radius:3px;background:var(--cream-2);margin-top:.5rem;overflow:hidden;width:150px}
 .bar i{display:block;height:100%;background:var(--terra);width:72%}
@@ -261,7 +261,7 @@ footer{background:#13261f;color:#9fb5aa;padding:5rem 0 2rem;margin-top:5rem}
   .why{padding:3rem}
   .foot{grid-template-columns:1fr 1fr}
 }
-@media(max-width:780px){
+@media(max-width:1100px){
   .menu{display:none;position:absolute;top:76px;left:0;right:0;background:var(--paper);flex-direction:column;align-items:stretch;padding:1rem 5% 1.5rem;border-bottom:1px solid var(--line);gap:.2rem;max-height:80vh;overflow:auto}
   .menu.open{display:flex}
   .dd-panel{position:static;transform:none;width:auto;grid-template-columns:1fr;box-shadow:none;border:0;padding:0 0 0 .5rem;display:none;opacity:1;pointer-events:auto}
@@ -269,6 +269,8 @@ footer{background:#13261f;color:#9fb5aa;padding:5rem 0 2rem;margin-top:5rem}
   .dd:hover .dd-panel{transform:none}
   .nav .btn-terra.desk{display:none}
   .burger{display:grid}
+}
+@media(max-width:780px){
   .sgrid,.how,.bgrid,.pillars{grid-template-columns:1fr}
   .scard.wide{grid-column:auto}
   .post.feature{grid-column:auto}
