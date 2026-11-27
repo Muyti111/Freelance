@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hartwell & Co. — Renovation & Carpentry (Design Concept)</title>
+<meta name="description" content="Design concept for a local services business: renovations, kitchens, bathrooms and carpentry.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#f6f3ee;--paper:#fff;--ink:#16130f;--ink-2:#3d3730;--muted:#7b736a;--line:#e5dfd6;--char:#1b1916;--char-2:#26231f;--brass:#b8925a;--brass-2:#9c7a45;--r:4px}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:Manrope,system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.7;-webkit-font-smoothing:antialiased}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer;border:0;background:none;color:inherit}
+h1,h2,h3{font-family:"Cormorant Garamond",Georgia,serif;font-weight:600;line-height:1.05;letter-spacing:-.01em}
+.wrap{width:min(1240px,90%);margin:0 auto}
+.kicker{font-size:.74rem;letter-spacing:.28em;text-transform:uppercase;font-weight:600;color:var(--brass)}
+.btn{display:inline-flex;align-items:center;gap:.7rem;padding:1rem 1.8rem;font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;border-radius:var(--r);transition:.3s}
+.btn-brass{background:var(--brass);color:#1b1916}.btn-brass:hover{background:#cba56b}
+.btn-line{border:1px solid currentColor}.btn-line:hover{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.btn-line.light:hover{background:var(--bg);color:var(--ink);border-color:var(--bg)}
+.ln{display:inline-flex;align-items:center;gap:.6rem;font-size:.78rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--brass-2)}
+.ln i{display:inline-block;width:28px;height:1px;background:currentColor;transition:width .3s}
+.ln:hover i,a:hover .ln i{width:44px}
+
+.concept{background:#0f0e0c;color:#8c8478;text-align:center;font-size:.75rem;letter-spacing:.06em;padding:.45rem 1rem}
+header{position:sticky;top:0;z-index:60;transition:background .4s,box-shadow .4s}
+header.dark{background:rgba(27,25,22,.92);backdrop-filter:blur(10px);box-shadow:0 1px 0 rgba(255,255,255,.06)}
+header.light{background:rgba(246,243,238,.94);backdrop-filter:blur(10px);box-shadow:0 1px 0 var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:84px}
+.logo{font-family:"Cormorant Garamond";font-weight:700;font-size:1.65rem;letter-spacing:.02em;display:flex;align-items:center;gap:.7rem}
+.logo .mono{width:40px;height:40px;border:1px solid var(--brass);display:grid;place-items:center;font-size:1.1rem;color:var(--brass)}
+header.dark .logo,header.dark .menu{color:#f1ece4}
+.menu{display:flex;gap:2.2rem;font-size:.8rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.menu a{position:relative;padding:.3rem 0;opacity:.85}
+.menu a:hover,.menu a.on{opacity:1}
+.menu a::after{content:"";position:absolute;left:0;bottom:-4px;height:1px;width:100%;background:var(--brass);transform:scaleX(0);transform-origin:right;transition:transform .35s}
+.menu a:hover::after,.menu a.on::after{transform:scaleX(1);transform-origin:left}
+.nav-call{display:flex;align-items:center;gap:.6rem;font-weight:700;font-size:.9rem}
+header.dark .nav-call{color:#f1ece4}
+.nav-call span{width:38px;height:38px;border-radius:50%;border:1px solid var(--brass);display:grid;place-items:center;color:var(--brass)}
+.burger{display:none;width:44px;height:44px;place-items:center}
+header.dark .burger{color:#f1ece4}
+
+.page{animation:fade .6s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.rv{opacity:0;transform:translateY(30px);transition:opacity 1s cubic-bezier(.2,.7,.2,1),transform 1s cubic-bezier(.2,.7,.2,1)}
+.rv.in{opacity:1;transform:none}
+
+/* hero */
+.hero{background:var(--char);color:#f1ece4;margin-top:-84px;padding-top:84px;position:relative;overflow:hidden}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;min-height:min(92vh,860px);align-items:center;gap:4rem}
+.hero h1{font-size:clamp(3.2rem,7vw,6.4rem);font-weight:500;margin:1.4rem 0 1.6rem}
+.hero h1 em{color:var(--brass);font-style:italic}
+.hero p{color:#b5ada2;font-size:1.08rem;max-width:480px;margin-bottom:2.4rem}
+.hero .acts{display:flex;gap:1rem;flex-wrap:wrap}
+.hero-visual{position:relative;height:100%;min-height:560px}
+.hero-visual .frame{position:absolute;inset:8% 0 8% 8%;overflow:hidden}
+.hero-visual .frame svg{width:100%;height:100%;transform:scale(1.08);animation:zoom 14s ease-out forwards}
+@keyframes zoom{to{transform:scale(1)}}
+.hero-visual .tag{position:absolute;left:0;bottom:14%;background:var(--bg);color:var(--ink);padding:1.4rem 1.6rem;min-width:240px;box-shadow:0 30px 60px -30px rgba(0,0,0,.6)}
+.hero-visual .tag b{font-family:"Cormorant Garamond";font-size:1.5rem;display:block;line-height:1.1}
+.hero-visual .tag small{color:var(--muted);font-size:.8rem}
+.scroll{position:absolute;left:5%;bottom:2rem;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:#7d756b;display:flex;align-items:center;gap:.8rem}
+.scroll i{width:1px;height:42px;background:linear-gradient(var(--brass),transparent);animation:drip 2s infinite}
+@keyframes drip{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
+
+.stats{background:var(--char-2);color:#f1ece4}
+.stats .wrap{display:grid;grid-template-columns:repeat(4,1fr)}
+.stat{padding:2.4rem 1.5rem;border-left:1px solid rgba(255,255,255,.07)}
+.stat:first-child{border-left:0}
+.stat b{font-family:"Cormorant Garamond";font-size:2.8rem;font-weight:500;color:var(--brass);display:block;line-height:1}
+.stat small{color:#9a9287;font-size:.82rem;letter-spacing:.06em}
+
+section{padding:8rem 0}
+.head{display:flex;justify-content:space-between;align-items:end;gap:2rem;margin-bottom:4rem;flex-wrap:wrap}
+.head h2{font-size:clamp(2.4rem,4.6vw,4rem);font-weight:500;max-width:640px;margin-top:1rem}
+.head p{max-width:400px;color:var(--ink-2)}
+
+/* services */
+.svc{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line)}
+.svc a{padding:2.8rem 2.2rem 2.4rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;transition:background .4s;min-height:330px;display:flex;flex-direction:column}
+.svc a:nth-child(3n){border-right:0}
+.svc a:hover{background:var(--paper)}
+.svc .num{font-family:"Cormorant Garamond";font-size:1.05rem;color:var(--brass);margin-bottom:2.2rem}
+.svc svg{width:46px;height:46px;color:var(--ink);margin-bottom:1.4rem;transition:transform .5s,color .3s}
+.svc a:hover svg{transform:translateY(-4px);color:var(--brass-2)}
+.svc h3{font-size:1.9rem;font-weight:600;margin-bottom:.6rem}
+.svc p{color:var(--muted);font-size:.95rem;flex:1;margin-bottom:1.2rem}
+
+/* feature split */
+.feature{display:grid;grid-template-columns:1.1fr 1fr;gap:6rem;align-items:center}
+.feature .img{aspect-ratio:4/5;overflow:hidden;position:relative}
+.feature .img svg{width:100%;height:100%;transition:transform 1.2s}
+.feature .img:hover svg{transform:scale(1.04)}
+.feature .img .badge{position:absolute;right:-1px;bottom:-1px;background:var(--bg);padding:1.6rem 2rem}
+.feature .img .badge b{font-family:"Cormorant Garamond";font-size:3rem;font-weight:500;line-height:1;display:block}
+.feature h2{font-size:clamp(2.4rem,4vw,3.6rem);font-weight:500;margin:1rem 0 1.4rem}
+.feature p{color:var(--ink-2);margin-bottom:1.2rem}
+.checks{list-style:none;margin:2rem 0 2.6rem;display:grid;gap:.9rem}
+.checks li{display:flex;gap:1rem;align-items:center;padding-bottom:.9rem;border-bottom:1px solid var(--line)}
+.checks li span{color:var(--brass);font-family:"Cormorant Garamond";font-size:1.2rem}
+
+/* gallery */
+.dark-sec{background:var(--char);color:#f1ece4}
+.dark-sec .head p{color:#a39b90}
+.filters{display:flex;gap:.4rem;flex-wrap:wrap}
+.filters button{padding:.6rem 1.1rem;border:1px solid rgba(255,255,255,.15);font-size:.75rem;letter-spacing:.14em;text-transform:uppercase;font-weight:600;color:#cfc8bd;transition:.3s}
+.filters button.on,.filters button:hover{background:var(--brass);border-color:var(--brass);color:#1b1916}
+.light .filters button{border-color:var(--line);color:var(--ink-2)}
+.gal{display:grid;grid-template-columns:repeat(12,1fr);grid-auto-rows:120px;gap:14px}
+.gi{position:relative;overflow:hidden;cursor:zoom-in;background:#2a2622}
+.gi svg{width:100%;height:100%;transition:transform 1s cubic-bezier(.2,.7,.2,1)}
+.gi:hover svg{transform:scale(1.06)}
+.gi .cap{position:absolute;inset:auto 0 0 0;padding:1.4rem;background:linear-gradient(transparent,rgba(0,0,0,.75));color:#fff;transform:translateY(20px);opacity:0;transition:.5s}
+.gi:hover .cap{transform:none;opacity:1}
+.gi .cap small{color:var(--brass);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700}
+.gi .cap b{font-family:"Cormorant Garamond";font-size:1.5rem;font-weight:500;display:block;line-height:1.2}
+.gi.hide{display:none}
+.s1{grid-column:span 7;grid-row:span 4}.s2{grid-column:span 5;grid-row:span 2}.s3{grid-column:span 5;grid-row:span 2}
+.s4{grid-column:span 4;grid-row:span 3}.s5{grid-column:span 4;grid-row:span 3}.s6{grid-column:span 4;grid-row:span 3}
+.gal.flat .gi{grid-column:span 4;grid-row:span 3}
+
+/* lightbox */
+.lb{position:fixed;inset:0;background:rgba(12,11,10,.94);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .4s}
+.lb.on{opacity:1;pointer-events:auto}
+.lb .stage{width:min(1100px,88vw);aspect-ratio:16/10;transform:scale(.96);transition:transform .4s}
+.lb.on .stage{transform:none}
+.lb .stage svg{width:100%;height:100%}
+.lb .meta{position:absolute;left:50%;bottom:3vh;transform:translateX(-50%);color:#f1ece4;text-align:center}
+.lb .meta b{font-family:"Cormorant Garamond";font-size:1.6rem;font-weight:500;display:block}
+.lb .meta small{color:var(--brass);letter-spacing:.2em;text-transform:uppercase;font-size:.7rem;font-weight:700}
+.lb .x,.lb .pv,.lb .nx{position:absolute;color:#f1ece4;width:52px;height:52px;border:1px solid rgba(255,255,255,.2);display:grid;place-items:center;font-size:1.3rem;transition:.3s}
+.lb .x:hover,.lb .pv:hover,.lb .nx:hover{background:var(--brass);color:#1b1916;border-color:var(--brass)}
+.lb .x{top:3vh;right:3vw}.lb .pv{left:3vw;top:50%}.lb .nx{right:3vw;top:50%}
+
+/* process */
+.proc{display:grid;grid-template-columns:repeat(4,1fr);gap:2.4rem;counter-reset:p}
+.proc div{border-top:1px solid var(--ink);padding-top:1.6rem}
+.proc div::before{counter-increment:p;content:"0" counter(p);font-family:"Cormorant Garamond";font-size:3.2rem;color:var(--brass);line-height:1;display:block;margin-bottom:1rem}
+.proc h3{font-size:1.6rem;margin-bottom:.4rem}
+.proc p{color:var(--muted);font-size:.93rem}
+
+/* reviews */
+.rv-wrap{display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.review{background:var(--paper);padding:2.8rem;border:1px solid var(--line);position:relative}
+.review .q{font-family:"Cormorant Garamond";font-size:5rem;line-height:.6;color:var(--brass);display:block;height:2.2rem}
+.review p{font-family:"Cormorant Garamond";font-size:1.5rem;line-height:1.35;font-weight:500;margin-bottom:1.6rem}
+.review .who{display:flex;align-items:center;gap:1rem;font-size:.9rem}
+.review .av{width:46px;height:46px;border-radius:50%;background:var(--char);color:var(--brass);display:grid;place-items:center;font-family:"Cormorant Garamond";font-size:1.2rem}
+.review .stars{color:var(--brass);letter-spacing:.15em;font-size:.85rem}
+.sample{position:absolute;top:1.2rem;right:1.2rem;font-size:.62rem;letter-spacing:.16em;text-transform:uppercase;font-weight:700;color:var(--muted);border:1px solid var(--line);padding:.2rem .5rem}
+.slider{position:relative;overflow:hidden}
+.track{display:flex;transition:transform .7s cubic-bezier(.2,.7,.2,1)}
+.track .review{flex:0 0 100%;text-align:center;padding:4rem 10%;background:none;border:0}
+.track .review p{font-size:clamp(1.6rem,3vw,2.4rem)}
+.track .review .who{justify-content:center}
+.dots{display:flex;justify-content:center;gap:.6rem;margin-top:1rem}
+.dots button{width:28px;height:2px;background:var(--line);transition:.3s}
+.dots button.on{background:var(--brass);width:48px}
+
+/* cta */
+.cta{position:relative;background:var(--char);color:#f1ece4;padding:6rem 5rem;display:grid;grid-template-columns:1.3fr 1fr;gap:3rem;align-items:center;overflow:hidden}
+.cta::before{content:"";position:absolute;right:-120px;top:-120px;width:420px;height:420px;border:1px solid rgba(184,146,90,.25);border-radius:50%}
+.cta::after{content:"";position:absolute;right:-60px;top:-60px;width:300px;height:300px;border:1px solid rgba(184,146,90,.18);border-radius:50%}
+.cta h2{font-size:clamp(2.4rem,4.4vw,3.8rem);font-weight:500}
+.cta h2 em{color:var(--brass)}
+.cta .acts{display:flex;flex-direction:column;gap:1rem;position:relative;z-index:1}
+.cta .big{font-family:"Cormorant Garamond";font-size:2.2rem;color:#f1ece4}
+.cta .big small{display:block;font-family:Manrope;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;color:var(--brass);font-weight:700}
+
+/* inner hero */
+.ihero{padding:9rem 0 5rem;background:var(--char);color:#f1ece4;margin-top:-84px}
+.ihero .wrap{display:grid;grid-template-columns:1.2fr 1fr;gap:3rem;align-items:end}
+.ihero h1{font-size:clamp(3rem,6vw,5.4rem);font-weight:500;margin-top:1rem}
+.ihero h1 em{color:var(--brass)}
+.ihero p{color:#b5ada2;font-size:1.08rem}
+.crumb{font-size:.75rem;letter-spacing:.2em;text-transform:uppercase;color:#7d756b}
+.crumb a:hover{color:var(--brass)}
+
+/* about */
+.values{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+.values div{background:var(--bg);padding:3rem 2.4rem}
+.values h3{font-size:1.9rem;margin:.8rem 0 .6rem}
+.values p{color:var(--muted)}
+.team{display:grid;grid-template-columns:repeat(3,1fr);gap:1.4rem}
+.member .ph{aspect-ratio:4/5;overflow:hidden;margin-bottom:1.2rem}
+.member .ph svg{width:100%;height:100%}
+.member h3{font-size:1.6rem}
+.member small{color:var(--brass);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;font-weight:700}
+
+/* services detail */
+.srow{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:center;padding:4.5rem 0;border-bottom:1px solid var(--line)}
+.srow:nth-child(even) .img{order:2}
+.srow .img{aspect-ratio:5/4;overflow:hidden}
+.srow .img svg{width:100%;height:100%}
+.srow h2{font-size:clamp(2.2rem,3.6vw,3.2rem);font-weight:500;margin:.8rem 0 1rem}
+.srow p{color:var(--ink-2)}
+.srow ul{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:.6rem 1.4rem;margin:1.6rem 0 2rem}
+.srow li{font-size:.92rem;display:flex;gap:.6rem}
+.srow li::before{content:"—";color:var(--brass)}
+
+/* contact */
+.contact{display:grid;grid-template-columns:1fr 1.3fr;gap:5rem}
+.cards{display:grid;gap:1px;background:var(--line);border:1px solid var(--line)}
+.cards a,.cards div{background:var(--bg);padding:1.8rem;display:flex;gap:1.2rem;align-items:center;transition:background .3s}
+.cards a:hover{background:var(--paper)}
+.cards .ic{width:50px;height:50px;border:1px solid var(--brass);display:grid;place-items:center;color:var(--brass);flex:0 0 50px}
+.cards small{display:block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);font-weight:700}
+.cards b{font-family:"Cormorant Garamond";font-size:1.5rem;font-weight:600}
+form{background:var(--paper);padding:3rem;border:1px solid var(--line)}
+form h3{font-size:2.2rem;font-weight:500;margin-bottom:.4rem}
+.fg{display:grid;grid-template-columns:1fr 1fr;gap:1.6rem 1.4rem;margin-top:2rem}
+.full{grid-column:1/-1}
+.f label{display:block;font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;font-weight:700;color:var(--muted);margin-bottom:.4rem}
+.f input,.f select,.f textarea{width:100%;border:0;border-bottom:1px solid var(--line);padding:.7rem 0;font:inherit;font-size:1rem;background:transparent;transition:border-color .3s}
+.f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--brass)}
+.f textarea{min-height:110px;resize:vertical}
+.f.err input,.f.err textarea{border-color:#b03a2e}
+.ok{text-align:center;padding:3rem 0}
+.ok .c{width:80px;height:80px;border:1px solid var(--brass);border-radius:50%;display:grid;place-items:center;margin:0 auto 1.4rem;color:var(--brass);font-size:2rem}
+
+/* sticky contact */
+.dock{position:fixed;right:24px;bottom:24px;z-index:80;display:flex;gap:.5rem;background:var(--char);padding:.45rem;border-radius:999px;box-shadow:0 20px 50px -15px rgba(0,0,0,.55);transform:translateY(120px);transition:transform .6s cubic-bezier(.2,.8,.2,1)}
+.dock.on{transform:none}
+.dock a{display:flex;align-items:center;gap:.55rem;padding:.85rem 1.3rem;border-radius:999px;font-size:.78rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#f1ece4;transition:background .3s}
+.dock a.call{background:var(--brass);color:#1b1916}
+.dock a:hover{background:#3a352f}.dock a.call:hover{background:#cba56b}
+.dock svg{width:17px;height:17px}
+
+footer{background:#0f0e0c;color:#8c8478;padding:6rem 0 2rem}
+.ft{display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:3rem;padding-bottom:4rem;border-bottom:1px solid rgba(255,255,255,.07)}
+.ft .logo{color:#f1ece4;margin-bottom:1.4rem}
+.ft h5{color:#f1ece4;font-size:.72rem;letter-spacing:.24em;text-transform:uppercase;margin-bottom:1.2rem}
+.ft li{list-style:none;margin-bottom:.6rem;font-size:.93rem}
+.ft a:hover{color:var(--brass)}
+.copy{display:flex;justify-content:space-between;padding-top:2rem;font-size:.8rem;flex-wrap:wrap;gap:1rem}
+
+@media(max-width:1020px){
+ .hero-grid,.feature,.ihero .wrap,.contact,.cta,.srow{grid-template-columns:1fr}
+ .hero-visual{min-height:420px}
+ .svc{grid-template-columns:1fr 1fr}.svc a:nth-child(3n){border-right:1px solid var(--line)}.svc a:nth-child(2n){border-right:0}
+ .proc,.team{grid-template-columns:1fr 1fr}
+ .stats .wrap{grid-template-columns:1fr 1fr}.stat:nth-child(3){border-left:0}
+ .srow:nth-child(even) .img{order:0}
+ .cta{padding:4rem 3rem}
+ .ft{grid-template-columns:1fr 1fr}
+ .gal .gi{grid-column:span 6!important;grid-row:span 3!important}
+}
+@media(max-width:760px){
+ .menu{display:none;position:absolute;top:84px;left:0;right:0;flex-direction:column;gap:1.4rem;padding:2rem 5%;background:var(--char);color:#f1ece4!important;font-size:1rem}
+ .menu.open{display:flex}
+ .nav-call{display:none}
+ .burger{display:grid}
+ header.light .menu{color:#f1ece4}
+ section{padding:5rem 0}
+ .svc,.proc,.team,.values,.rv-wrap{grid-template-columns:1fr}
+ .svc a{border-right:0!important;min-height:auto}
+ .gal{grid-auto-rows:90px}
+ .gal .gi{grid-column:span 12!important}
+ .fg{grid-template-columns:1fr}
+ form{padding:2rem}
+ .srow ul{grid-template-columns:1fr}
+ .ft{grid-template-columns:1fr}
+ .dock{left:0;right:0;bottom:0;border-radius:0;padding:.5rem;justify-content:stretch}
+ .dock a{flex:1;justify-content:center;border-radius:0}
+ footer{padding-bottom:6rem}
+ .cta{padding:3rem 1.6rem}
+ .lb .pv,.lb .nx{top:auto;bottom:12vh}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.rv{opacity:1;transform:none}}
+</style>
+</head>
+<body>
+<div class="concept">Design concept · placeholder brand, illustrations and sample reviews</div>
+
+<header id="hdr" class="dark">
+ <div class="wrap nav">
+  <a href="#/" class="logo"><span class="mono">H</span>Hartwell &amp; Co.</a>
+  <nav class="menu" id="menu">
+   <a href="#/" data-r="">Home</a><a href="#/about" data-r="about">About</a><a href="#/services" data-r="services">Services</a>
+   <a href="#/gallery" data-r="gallery">Gallery</a><a href="#/reviews" data-r="reviews">Reviews</a><a href="#/contact" data-r="contact">Contact</a>
+  </nav>
+  <a class="nav-call" href="tel:+15550100200"><span><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span>(555) 010-0200</a>
+  <button class="burger" id="burger" aria-label="Menu"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 8h16M4 16h16"/></svg></button>
+ </div>
+</header>
+
+<main id="app"></main>
+
+<footer>
+ <div class="wrap">
+  <div class="ft">
+   <div><a class="logo" href="#/"><span class="mono">H</span>Hartwell &amp; Co.</a><p style="max-width:320px;font-size:.93rem">Renovation, kitchens, bathrooms and fine carpentry. Built carefully, finished properly.</p></div>
+   <div><h5>Explore</h5><ul><li><a href="#/about">About</a></li><li><a href="#/services">Services</a></li><li><a href="#/gallery">Gallery</a></li><li><a href="#/reviews">Reviews</a></li></ul></div>
+   <div><h5>Services</h5><ul id="fsvc"></ul></div>
+   <div><h5>Contact</h5><ul><li><a href="tel:+15550100200">(555) 010-0200</a></li><li><a href="sms:+15550100200">Text us</a></li><li>hello@example.com</li><li>Mon–Sat · 7am–6pm</li></ul></div>
+  </div>
+  <div class="copy"><span>© 2026 Hartwell &amp; Co. (concept). Licensed &amp; insured — details shown on the live site.</span><span>Privacy · Terms</span></div>
+ </div>
+</footer>
+
+<div class="dock" id="dock">
+ <a class="call" href="tel:+15550100200"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg>Call</a>
+ <a href="sms:+15550100200"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 5h16v11H8l-4 4z"/></svg>Message</a>
+ <a href="#/contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 12h16M14 6l6 6-6 6"/></svg>Quote</a>
+</div>
+
+<div class="lb" id="lb" aria-hidden="true">
+ <button class="x" id="lbx" aria-label="Close">✕</button><button class="pv" id="lbp" aria-label="Previous">←</button><button class="nx" id="lbn" aria-label="Next">→</button>
+ <div class="stage" id="lbs"></div><div class="meta" id="lbm"></div>
+</div>
+
+<script>
+/* ===== Illustrated "photos" (replace with real project photos) ===== */
+function room(type,pal){
+ const P=[["#2b2723","#d9cbb6","#b8925a","#7a6a58"],["#e9e2d6","#3a3530","#b8925a","#9e8f7b"],["#1f2a28","#cfd6d0","#b8925a","#5f716b"],["#3a2e25","#e8dccb","#c49a5e","#8a6d50"],["#d9d3c9","#2a2622","#a98552","#7d766c"],["#262b30","#d6d2cb","#b8925a","#68717a"]][pal%6];
+ const [bg,lt,br,md]=P;
+ const shared=`<rect width="800" height="600" fill="${bg}"/><rect y="440" width="800" height="160" fill="${md}" opacity=".35"/>`;
+ const light=`<radialGradient id="l${pal}${type}" cx=".7" cy=".1" r=".9"><stop offset="0" stop-color="#fff" stop-opacity=".22"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></radialGradient>`;
+ let body="";
+ if(type==="kitchen"){body=`
+  <rect x="80" y="90" width="640" height="120" fill="${lt}" opacity=".12"/>
+  ${[0,1,2,3,4].map(i=>`<rect x="${90+i*126}" y="100" width="116" height="100" fill="${lt}" opacity=".85"/><rect x="${140+i*126}" y="185" width="16" height="3" fill="${br}"/>`).join("")}
+  <rect x="80" y="300" width="640" height="14" fill="${lt}"/>
+  ${[0,1,2,3,4].map(i=>`<rect x="${90+i*126}" y="320" width="116" height="120" fill="${md}"/><rect x="${140+i*126}" y="332" width="16" height="3" fill="${br}"/>`).join("")}
+  <rect x="250" y="390" width="300" height="20" fill="${lt}"/><rect x="262" y="410" width="276" height="90" fill="${bg}" opacity=".7"/>
+  ${[0,1,2].map(i=>`<line x1="${310+i*90}" y1="0" x2="${310+i*90}" y2="${230+i*0}" stroke="${br}" stroke-width="2"/><path d="M${290+i*90} 230h40l-6 18h-28z" fill="${br}"/>`).join("")}
+  <rect x="300" y="500" width="14" height="60" fill="${br}"/><rect x="480" y="500" width="14" height="60" fill="${br}"/>`}
+ if(type==="bath"){body=`
+  ${Array.from({length:10},(_,i)=>`<line x1="${i*80}" y1="0" x2="${i*80}" y2="440" stroke="${lt}" stroke-opacity=".12"/>`).join("")}
+  ${Array.from({length:6},(_,i)=>`<line x1="0" y1="${i*80}" x2="800" y2="${i*80}" stroke="${lt}" stroke-opacity=".12"/>`).join("")}
+  <ellipse cx="400" cy="200" rx="120" ry="140" fill="none" stroke="${br}" stroke-width="5"/><ellipse cx="400" cy="200" rx="112" ry="132" fill="${lt}" opacity=".16"/>
+  <rect x="250" y="360" width="300" height="20" fill="${lt}"/><rect x="270" y="380" width="260" height="110" fill="${md}"/>
+  <ellipse cx="400" cy="358" rx="70" ry="12" fill="${lt}"/><rect x="396" y="326" width="8" height="30" fill="${br}"/><rect x="396" y="326" width="30" height="6" fill="${br}"/>
+  <rect x="590" y="300" width="160" height="200" rx="80" fill="${lt}" opacity=".9"/><rect x="600" y="310" width="140" height="70" rx="35" fill="${bg}" opacity=".15"/>`}
+ if(type==="deck"){body=`
+  <rect width="800" height="300" fill="${lt}" opacity=".25"/><circle cx="620" cy="120" r="60" fill="${br}" opacity=".5"/>
+  <path d="M0 300 Q200 240 400 280 T800 260 V320 H0z" fill="${md}" opacity=".6"/>
+  ${Array.from({length:14},(_,i)=>`<path d="M${-100+i*70} 600 L${300+i*20} 330 L${312+i*20} 330 L${-70+i*70} 600z" fill="${i%2?br:md}" opacity="${i%2?.9:.7}"/>`).join("")}
+  <rect x="60" y="250" width="680" height="10" fill="${bg}"/>${Array.from({length:12},(_,i)=>`<rect x="${70+i*60}" y="250" width="6" height="90" fill="${bg}"/>`).join("")}`}
+ if(type==="living"){body=`
+  <rect x="120" y="80" width="260" height="300" fill="${lt}" opacity=".18"/><line x1="250" y1="80" x2="250" y2="380" stroke="${lt}" stroke-opacity=".4"/><line x1="120" y1="230" x2="380" y2="230" stroke="${lt}" stroke-opacity=".4"/>
+  <rect x="460" y="120" width="220" height="140" fill="none" stroke="${br}" stroke-width="3"/><rect x="474" y="134" width="192" height="112" fill="${br}" opacity=".25"/>
+  <rect x="180" y="380" width="440" height="80" rx="18" fill="${md}"/><rect x="200" y="340" width="400" height="60" rx="18" fill="${md}" opacity=".85"/>
+  <rect x="250" y="490" width="300" height="12" fill="${br}"/><rect x="270" y="502" width="8" height="50" fill="${br}"/><rect x="522" y="502" width="8" height="50" fill="${br}"/>
+  <line x1="700" y1="0" x2="700" y2="300" stroke="${br}" stroke-width="2"/><circle cx="700" cy="310" r="26" fill="${br}"/>`}
+ if(type==="carpentry"){body=`
+  ${Array.from({length:7},(_,r)=>`<rect x="140" y="${70+r*62}" width="520" height="8" fill="${br}"/>${Array.from({length:4+((r+pal)%3)},(_,b)=>`<rect x="${160+b*(90-r*3)+r*7}" y="${70+r*62-((b*13+r*7)%30)-26}" width="${14+((b+r)%3)*8}" height="${26+((b*13+r*7)%30)}" fill="${[lt,md,br][(b+r)%3]}" opacity=".9"/>`).join("")}`).join("")}
+  <rect x="130" y="60" width="10" height="460" fill="${br}"/><rect x="660" y="60" width="10" height="460" fill="${br}"/>`}
+ if(type==="exterior"){body=`
+  <rect width="800" height="600" fill="${lt}" opacity=".2"/>
+  <path d="M140 260 L400 90 L660 260z" fill="${md}"/><rect x="170" y="260" width="460" height="250" fill="${lt}" opacity=".9"/>
+  <rect x="360" y="370" width="80" height="140" fill="${bg}"/><circle cx="428" cy="440" r="4" fill="${br}"/>
+  ${[0,1].map(i=>`<rect x="${210+i*290}" y="310" width="90" height="90" fill="${bg}" opacity=".8"/><line x1="${255+i*290}" y1="310" x2="${255+i*290}" y2="400" stroke="${lt}"/><line x1="${210+i*290}" y1="355" x2="${300+i*290}" y2="355" stroke="${lt}"/>`).join("")}
+  <rect y="510" width="800" height="90" fill="${md}" opacity=".7"/><path d="M380 600 L420 510 L440 510 L460 600z" fill="${br}" opacity=".6"/>`}
+ return `<svg viewBox="0 0 800 600" preserveAspectRatio="xMidYMid slice"><defs>${light}</defs>${shared}${body}<rect width="800" height="600" fill="url(#l${pal}${type})"/></svg>`;
+}
+
+/* ===== Content ===== */
+const SVC=[
+ {id:"kitchens",icon:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6" y="20" width="36" height="22"/><path d="M6 28h36M18 20v22M30 20v22M10 10h28v6H10z"/></svg>',name:"Kitchen Remodels",text:"Layout, cabinetry, counters and lighting — designed around how you cook and live.",items:["Custom & semi-custom cabinetry","Stone and solid-surface counters","Islands and pantry storage","Lighting and finish selection"],art:["kitchen",0]},
+ {id:"bathrooms",icon:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 24h36v6a10 10 0 0 1-10 10H16A10 10 0 0 1 6 30z"/><path d="M12 24V10a4 4 0 0 1 8 0"/></svg>',name:"Bathrooms",text:"Spa-calm bathrooms with waterproofing, tile and fixtures done right the first time.",items:["Full tear-out and rebuild","Walk-in showers & tubs","Tile and stone work","Vanities and fixtures"],art:["bath",2]},
+ {id:"carpentry",icon:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M8 40 30 18M26 14l8 8 6-6-8-8z"/><path d="M8 40l-2 2"/></svg>',name:"Fine Carpentry",text:"Built-ins, shelving, trim and millwork with careful, furniture-grade detail.",items:["Built-in shelving & wardrobes","Trim and wainscoting","Custom doors","Feature walls"],art:["carpentry",3]},
+ {id:"renovations",icon:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 22 24 8l18 14v20H6z"/><path d="M18 42V30h12v12"/></svg>',name:"Whole-Home Renovation",text:"Room-by-room or the whole house, managed from first drawing to final walkthrough.",items:["Open-plan conversions","Flooring and finishes","Project management","Permits coordination"],art:["living",1]},
+ {id:"outdoor",icon:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 30h40M8 30v12M40 30v12M4 36h40"/><circle cx="34" cy="12" r="5"/></svg>',name:"Decks & Outdoor",text:"Decks, pergolas and outdoor living spaces built to handle every season.",items:["Hardwood & composite decks","Pergolas and shade","Railings and stairs","Outdoor lighting"],art:["deck",4]},
+ {id:"exterior",icon:'<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 20 24 6l20 14"/><rect x="10" y="20" width="28" height="22"/><path d="M20 42V30h8v12"/></svg>',name:"Repairs & Exteriors",text:"Siding, windows, doors and the repairs that keep a home looking sharp.",items:["Windows & doors","Siding and trim repair","Drywall and paint","Punch-list repairs"],art:["exterior",5]}
+];
+const GAL=[
+ ["kitchen",0,"Kitchens","Walnut & Stone Kitchen"],["bath",2,"Bathrooms","Arched Mirror Ensuite"],["deck",4,"Outdoor","Hardwood Garden Deck"],
+ ["living",1,"Renovation","Open-Plan Living Room"],["carpentry",3,"Carpentry","Library Built-Ins"],["exterior",5,"Exteriors","Craftsman Facade Refresh"],
+ ["kitchen",3,"Kitchens","Warm Oak Kitchen"],["bath",0,"Bathrooms","Dark Tile Guest Bath"],["carpentry",1,"Carpentry","Living Room Shelving"]
+];
+const REV=[
+ ["They treated our home like it was their own. The kitchen came in on schedule, and the finish work is beautiful.","J. M.","Kitchen remodel"],
+ ["Clear quote, daily updates and a spotless site every evening. We'd hire them again tomorrow.","R. & L. T.","Bathroom renovation"],
+ ["The built-ins look like they've always been part of the house. Real craftsmanship.","S. K.","Custom carpentry"],
+ ["From permits to the final walkthrough, everything was handled. Stress-free.","D. A.","Whole-home renovation"]
+];
+
+/* ===== Helpers ===== */
+const $=s=>document.querySelector(s),$$=s=>document.querySelectorAll(s);
+const ARROW='<i></i>';
+function cta(){return `<section style="padding-top:0"><div class="wrap"><div class="cta rv"><div><span class="kicker">Start your project</span><h2 style="margin-top:1rem">Let's talk about <em>your</em> space.</h2><p style="color:#a39b90;margin-top:1rem;max-width:440px">Free, no-pressure estimate. Call, send a message or request a quote — whatever's easiest.</p></div>
+ <div class="acts"><a class="big" href="tel:+15550100200"><small>Call us</small>(555) 010-0200</a><div style="display:flex;gap:.8rem;flex-wrap:wrap"><a class="btn btn-brass" href="#/contact">Request a Quote</a><a class="btn btn-line light" href="sms:+15550100200">Send a Message</a></div></div></div></div></section>`}
+function gallery(items,flat){return `<div class="gal ${flat?"flat":""}" id="gal">${items.map((g,i)=>`<div class="gi s${(i%6)+1}" data-i="${i}" data-c="${g[2]}">${room(g[0],g[1])}<div class="cap"><small>${g[2]}</small><b>${g[3]}</b></div></div>`).join("")}</div>`}
+function filters(){return `<div class="filters" id="flt">${["All",...new Set(GAL.map(g=>g[2]))].map((c,i)=>`<button class="${i?"":"on"}" data-c="${c}">${c}</button>`).join("")}</div>`}
+function ihero(crumb,title,text){return `<div class="ihero"><div class="wrap"><div><div class="crumb"><a href="#/">Home</a> / ${crumb}</div><h1>${title}</h1></div><p>${text}</p></div></div>`}
+
+/* ===== Pages ===== */
+const P={
+home:()=>`
+<section class="hero" style="padding-bottom:0"><div class="wrap hero-grid">
+ <div class="rv in"><span class="kicker">Renovation · Kitchens · Carpentry</span><h1>Homes built<br>with <em>quiet</em><br>precision.</h1>
+  <p>We design and build kitchens, bathrooms and custom carpentry for homeowners who care about the details — and want a team that shows up, communicates and finishes properly.</p>
+  <div class="acts"><a class="btn btn-brass" href="#/contact">Get a Free Estimate</a><a class="btn btn-line light" href="#/gallery">View Our Work</a></div></div>
+ <div class="hero-visual"><div class="frame">${room("kitchen",0)}</div><div class="tag"><small>Featured project</small><b>Walnut &amp; Stone Kitchen</b></div></div>
+</div><div class="scroll"><i></i>Scroll</div></section>
+<div class="stats"><div class="wrap">${[["15+","Years of experience"],["400+","Projects completed"],["Free","Estimates & consultation"],["100%","Licensed & insured"]].map(s=>`<div class="stat"><b>${s[0]}</b><small>${s[1]}</small></div>`).join("")}</div></div>
+
+<section><div class="wrap">
+ <div class="head rv"><div><span class="kicker">What we do</span><h2>Six services. One standard of craft.</h2></div><p>From a single bathroom to a whole-home renovation, every job gets the same care, clear pricing and clean finish.</p></div>
+ <div class="svc">${SVC.map((s,i)=>`<a href="#/services" class="rv" style="transition-delay:${(i%3)*.08}s"><span class="num">0${i+1}</span>${s.icon}<h3>${s.name}</h3><p>${s.text}</p><span class="ln">Learn more ${ARROW}</span></a>`).join("")}</div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap feature">
+ <div class="img rv">${room("living",1)}<div class="badge"><b>15+</b><small style="color:var(--muted)">years building</small></div></div>
+ <div class="rv"><span class="kicker">Why homeowners choose us</span><h2>Craftsmanship you can see. Service you can feel.</h2>
+  <p>We're a small, hands-on team. The person who quotes your project is the person who oversees it — so nothing gets lost between the estimate and the finish.</p>
+  <ul class="checks"><li><span>i.</span>Clear, itemized quotes — no surprises</li><li><span>ii.</span>Daily updates and a clean site every evening</li><li><span>iii.</span>Licensed, insured and warranty-backed work</li></ul>
+  <a href="#/about" class="ln">Our story ${ARROW}</a></div>
+</div></section>
+
+<section class="dark-sec"><div class="wrap">
+ <div class="head rv"><div><span class="kicker">Selected work</span><h2>Recent projects</h2></div><a class="btn btn-line light" href="#/gallery">Full Gallery</a></div>
+ ${gallery(GAL.slice(0,6))}
+</div></section>
+
+<section><div class="wrap">
+ <div class="head rv"><div><span class="kicker">How it works</span><h2>A simple, honest process.</h2></div></div>
+ <div class="proc">${[["Call or message","Tell us about your project. We'll book a free visit."],["Free estimate","We measure, listen and send a clear, itemized quote."],["We build","A dedicated lead, daily updates and a tidy site."],["Final walkthrough","We don't finish until you're happy with every detail."]].map(p=>`<div class="rv"><h3>${p[0]}</h3><p>${p[1]}</p></div>`).join("")}</div>
+</div></section>
+
+<section style="padding-top:0"><div class="wrap">
+ <div class="head rv" style="justify-content:center;text-align:center"><div><span class="kicker">Reviews</span><h2 style="margin-inline:auto">Words from our clients</h2></div></div>
+ <div class="slider rv"><div class="track" id="track">${REV.map(r=>`<div class="review"><span class="q">“</span><p>${r[0]}</p><div class="who"><span class="av">${r[1][0]}</span><div style="text-align:left"><b>${r[1]}</b><br><span class="stars">★★★★★</span> <small style="color:var(--muted)">${r[2]}</small></div></div></div>`).join("")}</div>
+ <div class="dots" id="dots">${REV.map((_,i)=>`<button class="${i?"":"on"}" aria-label="Review ${i+1}"></button>`).join("")}</div>
+ <p style="text-align:center;color:var(--muted);font-size:.78rem;margin-top:1rem">Sample reviews for layout — replaced with your real Google reviews.</p></div>
+</div></section>
+${cta()}`,
+
+about:()=>`${ihero("About",'Small team.<br><em>Serious</em> craft.',"We're builders first. Every project is led by an experienced craftsman who stays with it from the first visit to the final walkthrough.")}
+<section><div class="wrap feature">
+ <div class="img rv">${room("carpentry",3)}</div>
+ <div class="rv"><span class="kicker">Our story</span><h2>Built on referrals, one home at a time.</h2>
+  <p>Placeholder story: your history goes here — how the business started, what you specialise in and why clients keep recommending you.</p>
+  <p>We believe a good renovation should feel calm: clear pricing, honest timelines and people who respect your home.</p></div>
+</div></section>
+<section style="padding-top:0"><div class="wrap"><div class="values">${[["Honest","Itemized quotes and straight answers, even when it's not what you hoped to hear."],["Careful","Floors protected, dust controlled and the site left tidy every single day."],["Proud","We finish details most people never notice — because you'll live with them."]].map((v,i)=>`<div class="rv"><span class="kicker">0${i+1}</span><h3>${v[0]}</h3><p>${v[1]}</p></div>`).join("")}</div></div></section>
+<section style="padding-top:0"><div class="wrap"><div class="head rv"><div><span class="kicker">The team</span><h2>The people on your project</h2></div></div>
+ <div class="team">${[["Owner & Lead Builder",0],["Project Manager",2],["Finish Carpenter",4]].map(t=>`<div class="member rv"><div class="ph">${room("living",t[1])}</div><small>${t[0]}</small><h3>Team member name</h3></div>`).join("")}</div></div></section>
+${cta()}`,
+
+services:()=>`${ihero("Services",'Everything your<br>home <em>needs.</em>',"Six core services, one crew and one point of contact — from the first sketch to the final coat of paint.")}
+<section style="padding-top:2rem"><div class="wrap">${SVC.map((s,i)=>`<div class="srow" id="${s.id}"><div class="img rv">${room(s.art[0],s.art[1])}</div><div class="rv"><span class="kicker">0${i+1} — Service</span><h2>${s.name}</h2><p>${s.text}</p><ul>${s.items.map(x=>`<li>${x}</li>`).join("")}</ul><div style="display:flex;gap:.8rem;flex-wrap:wrap"><a class="btn btn-brass" href="#/contact?s=${s.id}">Get a Quote</a><a class="btn btn-line" href="tel:+15550100200">Call Now</a></div></div></div>`).join("")}</div></section>
+${cta()}`,
+
+gallery:()=>`${ihero("Gallery",'Our <em>work,</em><br>up close.',"A selection of recent projects. Tap any image to view it full-screen.")}
+<section class="light"><div class="wrap"><div class="head rv" style="margin-bottom:2.4rem"><div></div>${filters()}</div>${gallery(GAL,true)}</div></section>
+${cta()}`,
+
+reviews:()=>`${ihero("Reviews",'Trusted by<br><em>homeowners.</em>',"What clients say after we pack up our tools. Your verified Google reviews can be pulled in here automatically.")}
+<section><div class="wrap">
+ <div style="display:flex;align-items:center;gap:2rem;flex-wrap:wrap;margin-bottom:3rem" class="rv"><div style="font-family:'Cormorant Garamond';font-size:5rem;line-height:1">5.0</div><div><div class="stars" style="color:var(--brass);font-size:1.3rem;letter-spacing:.2em">★★★★★</div><small style="color:var(--muted)">Average rating · sample data for this concept</small></div><a class="btn btn-brass" href="#/contact" style="margin-left:auto">Start Your Project</a></div>
+ <div class="rv-wrap">${REV.map(r=>`<div class="review rv"><span class="sample">Sample</span><span class="q">“</span><p>${r[0]}</p><div class="who"><span class="av">${r[1][0]}</span><div><b>${r[1]}</b><br><span class="stars">★★★★★</span> <small style="color:var(--muted)">${r[2]}</small></div></div></div>`).join("")}</div>
+</div></section>${cta()}`,
+
+contact:(pre)=>`${ihero("Contact",'Let\'s <em>talk.</em>',"Call, text or send the form — we usually reply the same day. Estimates are always free.")}
+<section><div class="wrap contact">
+ <div class="rv"><div class="cards">
+  <a href="tel:+15550100200"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 0 0 5 5L15 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2"/></svg></span><div><small>Call</small><b>(555) 010-0200</b></div></a>
+  <a href="sms:+15550100200"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M4 5h16v11H8l-4 4z"/></svg></span><div><small>Text / Message</small><b>Send a message</b></div></a>
+  <a href="mailto:hello@example.com"><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><rect x="3" y="5" width="18" height="14"/><path d="m3 7 9 6 9-6"/></svg></span><div><small>Email</small><b>hello@example.com</b></div></a>
+  <div><span class="ic"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span><div><small>Hours</small><b>Mon–Sat · 7am–6pm</b></div></div>
+ </div></div>
+ <form id="cf" class="rv" novalidate><div id="ff"><span class="kicker">Free estimate</span><h3>Tell us about your project</h3>
+  <div class="fg">
+   <div class="f"><label>Name *</label><input name="n" required autocomplete="name"></div>
+   <div class="f"><label>Phone *</label><input name="p" type="tel" required autocomplete="tel"></div>
+   <div class="f"><label>Email</label><input name="e" type="email" autocomplete="email"></div>
+   <div class="f"><label>Service</label><select name="s"><option value="">Choose a service</option>${SVC.map(s=>`<option value="${s.id}" ${pre===s.id?"selected":""}>${s.name}</option>`).join("")}</select></div>
+   <div class="f full"><label>Project details *</label><textarea name="m" required placeholder="What would you like to build or fix?"></textarea></div>
+  </div>
+  <button class="btn btn-brass" style="width:100%;justify-content:center;margin-top:2.2rem" type="submit">Send Request</button>
+  <p style="text-align:center;color:var(--muted);font-size:.8rem;margin-top:1rem">Demo form — on the live site this goes to your inbox with spam protection.</p></div>
+  <div class="ok" id="ok" hidden><div class="c">✓</div><h3>Thank you.</h3><p style="color:var(--muted)">We'll call you back shortly to arrange your free estimate.</p></div>
+ </form>
+</div></section>`
+};
+
+/* ===== Interactions ===== */
+let io,slideT,lbList=[],lbI=0;
+function openLB(i){lbI=i;const g=lbList[i];$("#lbs").innerHTML=room(g[0],g[1]);$("#lbm").innerHTML=`<small>${g[2]}</small><b>${g[3]}</b>`;$("#lb").classList.add("on");$("#lb").setAttribute("aria-hidden","false")}
+function closeLB(){$("#lb").classList.remove("on");$("#lb").setAttribute("aria-hidden","true")}
+$("#lbx").onclick=closeLB;$("#lbp").onclick=()=>openLB((lbI-1+lbList.length)%lbList.length);$("#lbn").onclick=()=>openLB((lbI+1)%lbList.length);
+$("#lb").onclick=e=>{if(e.target.id==="lb")closeLB()};
+addEventListener("keydown",e=>{if(!$("#lb").classList.contains("on"))return;if(e.key==="Escape")closeLB();if(e.key==="ArrowRight")$("#lbn").click();if(e.key==="ArrowLeft")$("#lbp").click()});
+
+function route(){
+ const raw=location.hash.replace(/^#\/?/,""),[path,qs]=raw.split("?"),page=path.split("/")[0];
+ const pre=new URLSearchParams(qs||"").get("s");
+ $("#app").innerHTML=`<div class="page">${(P[page]||P.home)(pre)}</div>`;
+ $$(".menu a").forEach(a=>a.classList.toggle("on",a.dataset.r===page));
+ $("#menu").classList.remove("open");
+ scrollTo({top:0});onScroll();
+ io&&io.disconnect();
+ io=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add("in");io.unobserve(e.target)}}),{threshold:.12,rootMargin:"0px 0px -40px 0px"});
+ $$(".rv").forEach(el=>io.observe(el));
+ // gallery
+ const gal=$("#gal");
+ if(gal){const items=page==="gallery"?GAL:GAL.slice(0,6);
+  const vis=()=>[...gal.querySelectorAll(".gi:not(.hide)")].map(el=>items[+el.dataset.i]);
+  gal.querySelectorAll(".gi").forEach(el=>el.onclick=()=>{lbList=vis();openLB(lbList.indexOf(items[+el.dataset.i]))});
+  $$("#flt button").forEach(b=>b.onclick=()=>{$$("#flt button").forEach(x=>x.classList.remove("on"));b.classList.add("on");
+   gal.querySelectorAll(".gi").forEach(el=>el.classList.toggle("hide",b.dataset.c!=="All"&&el.dataset.c!==b.dataset.c))});}
+ // slider
+ clearInterval(slideT);const tr=$("#track");
+ if(tr){let k=0;const go=n=>{k=n;tr.style.transform=`translateX(-${k*100}%)`;$$("#dots button").forEach((d,i)=>d.classList.toggle("on",i===k))};
+  $$("#dots button").forEach((d,i)=>d.onclick=()=>{go(i);clearInterval(slideT)});slideT=setInterval(()=>go((k+1)%REV.length),6000)}
+ // form
+ const f=$("#cf");if(f)f.onsubmit=e=>{e.preventDefault();let ok=true;f.querySelectorAll("[required]").forEach(i=>{const bad=!i.value.trim();i.parentElement.classList.toggle("err",bad);if(bad)ok=false});if(!ok)return;$("#ff").hidden=true;$("#ok").hidden=false};
+}
+function onScroll(){const y=scrollY;const h=$("#hdr");h.className=y>40?"light":"dark";$("#dock").classList.toggle("on",y>240||innerWidth<760)}
+$("#fsvc").innerHTML=SVC.map(s=>`<li><a href="#/services">${s.name}</a></li>`).join("");
+$("#burger").onclick=()=>$("#menu").classList.toggle("open");
+addEventListener("hashchange",route);addEventListener("scroll",onScroll,{passive:true});addEventListener("resize",onScroll);
+route();
+</script>
+</body>
+</html>
